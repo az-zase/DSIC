@@ -1,0 +1,91 @@
+%%{init: {'flowchart': {'htmlLabels': true}, 'themeVariables': {'fontFamily': 'Segoe UI, Arial, sans-serif'}}}%%
+flowchart TB
+
+classDef L0 fill:#6C5CE7,stroke:#4B3FB0,color:#fff,stroke-width:1px;
+classDef L1 fill:#2E5A88,stroke:#1E3E60,color:#fff,stroke-width:1px;
+classDef L2 fill:#138D75,stroke:#0B6150,color:#fff,stroke-width:1px;
+classDef L3 fill:#B9770E,stroke:#8A5A0A,color:#fff,stroke-width:1px;
+classDef RES fill:#34495E,stroke:#22303C,color:#fff,stroke-width:1px;
+classDef CMB fill:#FBEAEA,stroke:#C0392B,color:#C0392B,stroke-width:1.5px,stroke-dasharray:5 4;
+classDef INV fill:#ECF0F1,stroke:#95A5A6,color:#2C3E50,stroke-width:1px,stroke-dasharray:3 3;
+classDef LEG fill:#FFFFFF,stroke:#BBBBBB,color:#333,stroke-width:1px;
+
+LEGEND["<div style='width:300px;text-align:left'><b style='font-size:15px'>ЛЕГЕНДА СЛОЁВ</b><br/><span style='font-size:12px'>🟣 слой 0 — поток (время)<br/>🔵 слой 1 — ядро (со знаком)<br/>🟢 слой 2 — проекция (модули)<br/>🟠 слой 3 — физика (наблюдаемое)<br/>⬜ серый пунктир — инварианты-проверки<br/>🟥 красный пунктир — граница применимости</span></div>"]
+
+ACT["<div style='width:300px;text-align:center'><b style='font-size:19px'>𝒮[φ] = ∫ ½ φ̇² dt</b><br/><span style='font-size:12px'>действие свободного потока φ; варьируя, получаем φ̈ = 0 — поток ниоткуда не ускоряется</span></div>"]
+PHI["<div style='width:280px;text-align:center'><b style='font-size:19px'>φ = ω·t</b><br/><span style='font-size:12px'>фаза растёт равномерно со скоростью ω — само необратимое время, единственная динамика модели</span></div>"]
+
+S["<div style='width:280px;text-align:center'><b style='font-size:19px'>S = R·sin(φ/2)</b><br/><span style='font-size:12px'>масштаб пространства (со знаком); нечётная функция φ, проходит ноль и меняет знак</span></div>"]
+O["<div style='width:280px;text-align:center'><b style='font-size:19px'>O = R·cos(φ/2)</b><br/><span style='font-size:12px'>масштаб объектности (со знаком); сдвинут на ¼ оборота относительно S</span></div>"]
+NORM["<div style='width:300px;text-align:center'><b style='font-size:19px'>S² + O² = R²</b><br/><span style='font-size:12px'>главный закон: норма постоянна (окружность); масштаб только перетекает между полюсами</span></div>"]
+W["<div style='width:300px;text-align:center'><b style='font-size:17px'>W = S·O′ − O·S′ = −R²/2</b><br/><span style='font-size:12px'>Вронскиан-константа: один полюс в нуле — другой в максимуме (квадратура)</span></div>"]
+SIG["<div style='width:300px;text-align:center'><b style='font-size:16px'>σ = sign(S), sign(O)<br/>O_full = O · σ_S</b><br/><span style='font-size:12px'>знаковая фаза; объектность наследует знак пространства при проходе каши</span></div>"]
+
+PROJ["<div style='width:300px;text-align:center'><b style='font-size:17px'>π : O(φ) ↦ |O(φ)|</b><br/><span style='font-size:12px'>операция модуля: знак срезается, зеркальная ветвь принципиально ненаблюдаема</span></div>"]
+P["<div style='width:290px;text-align:center'><b style='font-size:18px'>P = |S| = R·√(1−μ²)</b><br/><span style='font-size:12px'>наблюдаемое пространство (≥0); свет распространяется по этому полюсу</span></div>"]
+Q["<div style='width:280px;text-align:center'><b style='font-size:18px'>Q = |O| = R·μ</b><br/><span style='font-size:12px'>наблюдаемая объектность (≥0); из неё сделаны наблюдатель, его линейка и часы</span></div>"]
+MU["<div style='width:290px;text-align:center'><b style='font-size:18px'>μ = |cos(φ/2)| = Q/R</b><br/><span style='font-size:12px'>наблюдаемая фаза ∈ [0,1] — доля объектности; главная переменная всей физики</span></div>"]
+PQ["<div style='width:280px;text-align:center'><b style='font-size:18px'>P² + Q² = R²</b><br/><span style='font-size:12px'>та же норма в проекции: модуль сохраняет окружность (проверка слоёв)</span></div>"]
+
+LT["<div style='width:320px;text-align:center'><b style='font-size:15px'>L(μ) ∝ μ ;  dτ = dt/μ ;  c = const</b><br/><span style='font-size:12px'>шкалы наблюдателя: линейка тянется с объектностью, часы — обратно ей; c = const фиксирует обе</span></div>"]
+B["<div style='width:300px;text-align:center'><b style='font-size:19px'>b(μ) = √(1−μ²) / μ²</b><br/><span style='font-size:12px'>масштабный фактор — сердце модели; вся наблюдаемая физика выводится из него</span></div>"]
+Z["<div style='width:290px;text-align:center'><b style='font-size:17px'>1 + z = b(μ₀) / b(μ_e)</b><br/><span style='font-size:12px'>красное смещение — отношение масштаба сегодня к масштабу в момент излучения</span></div>"]
+H["<div style='width:290px;text-align:center'><b style='font-size:17px'>|H_τ| = (2−μ²) / (1−μ²)</b><br/><span style='font-size:12px'>темп расширения (ед. k): у каши → ∞, у отскока → 2</span></div>"]
+Q3["<div style='width:320px;text-align:center'><b style='font-size:16px'>q = (−μ⁴+6μ²−4)/(μ⁴−4μ²+4)</b><br/><span style='font-size:12px'>параметр замедления; меняет знак при z_t≈0.77 — ускорение из геометрии, без тёмной энергии</span></div>"]
+RS["<div style='width:330px;text-align:center'><b style='font-size:13px'>r = (μ⁶−16μ⁴+20μ²−8)/(μ⁶−6μ⁴+12μ²−8)<br/>s = (r−1) / [3(q−½)]</b><br/><span style='font-size:12px'>statefinder; при μ₀=0.76: r≈0.55, s≈0.16 — отличие от точки ΛCDM (r=1, s=0)</span></div>"]
+CHI["<div style='width:340px;text-align:center'><b style='font-size:14px'>χ = (c/k)·[√(1−μ₀²)/μ₀²]·[√(1−μ₀²) − √(1−μ_e²)]</b><br/><span style='font-size:12px'>сопутствующее расстояние в замкнутом виде; горизонт частиц конечен сам по себе</span></div>"]
+DL["<div style='width:330px;text-align:center'><b style='font-size:15px'>d_L = (1+z)·χ ;  DM = 5·log₁₀(d_L/10пк)</b><br/><span style='font-size:12px'>светимостное расстояние и модуль — именно это сравнивается со сверхновыми</span></div>"]
+OM["<div style='width:320px;text-align:center'><b style='font-size:15px'>Om(z) = (E²−1)/((1+z)³−1)</b><br/><span style='font-size:12px'>диагностика, E = H/H₀; у ΛCDM плоская, у DSIC убывает — фальсифицируемая подпись</span></div>"]
+
+FIT["<div style='width:340px;text-align:center'><b style='font-size:15px'>СВЕРКА С ДАННЫМИ</b><br/><span style='font-size:12px'>Pantheon+SH0ES (1657 SN, якорь+ковариация): Δχ² = +0.05 vs ΛCDM, χ²/dof = 0.878, H₀ ≈ 73, μ₀ = 0.76 — неотличимо от ΛCDM. + BAO DESI, хронометры, возраст, z_t — всё при одном μ₀ ≈ 0.76</span></div>"]
+CMBN["<div style='width:320px;text-align:center'><b style='font-size:14px'>ГРАНИЦА: реликтовое излучение</b><br/><span style='font-size:12px'>при z=1090: 10936 vs 13873 Мпк, недобор 21% — честный предел модели; следствие конечного горизонта частиц (насыщается уже к z≈10)</span></div>"]
+
+ACT --> PHI
+PHI --> S
+PHI --> O
+S --> NORM
+O --> NORM
+S -.-> W
+O -.-> W
+S --> SIG
+O --> SIG
+
+S --> PROJ
+O --> PROJ
+SIG -.->|знак срезается| PROJ
+PROJ --> P
+PROJ --> Q
+P --> MU
+Q --> MU
+P -.-> PQ
+Q -.-> PQ
+
+MU --> LT
+MU --> B
+LT --> B
+B --> Z
+B --> H
+B --> Q3
+B --> CHI
+B --> RS
+Q3 --> RS
+Z --> CHI
+CHI --> DL
+Z --> DL
+H --> OM
+Z --> OM
+
+DL --> FIT
+H --> FIT
+OM --> FIT
+CHI -.-> CMBN
+Z -.-> CMBN
+
+class LEGEND LEG;
+class ACT,PHI L0;
+class S,O,NORM,SIG L1;
+class W,PQ INV;
+class PROJ,P,Q,MU L2;
+class LT,B,Z,H,Q3,RS,CHI,DL,OM L3;
+class FIT RES;
+class CMBN CMB;
