@@ -1,8 +1,8 @@
 # DSIC
 
-**Dual Scale Inversion Cosmology (DSIC)** is a single-parameter cosmological model without dark energy. 
+**Dual Scale Inversion Cosmology (DSIC)** is a single-parameter cosmological model without dark energy.
 
-Space and matter as two sides of one flow. 
+Space and matter as two sides of one flow.
 
 The model describes the Universe as a continuous transfer between two complementary scales:
 - Space (S)
@@ -10,7 +10,7 @@ The model describes the Universe as a continuous transfer between two complement
 
 Rather than introducing dark energy, DSIC attributes the observed late-time acceleration to the geometry of this dual-scale evolution. The entire late-Universe cosmology is generated from a single observable phase parameter μ, with the present epoch corresponding to μ₀ ≈ 0.76.
 
-Current implementation reproduces the expansion history of the mid-to-late Universe using one free cosmological parameter and matches ΛCDM on the full Pantheon+SH0ES supernova sample (Δχ² ≈ +0.05), while also providing consistent fits to BAO, cosmic chronometers, the transition redshift, and the age of the Universe. On the joint SN+BAO fit DSIC is marginally preferred (Δχ² ≈ −5.0, a weak formal preference). All empirical claims are reproduced by self-contained scripts included in the repository.
+The core implementation reproduces the expansion history of the mid-to-late Universe using one free cosmological parameter and matches ΛCDM on the full Pantheon+SH0ES supernova sample (Δχ² ≈ +0.05), while also providing consistent fits to BAO, cosmic chronometers, the transition redshift, and the age of the Universe. On the joint SN+BAO fit DSIC is marginally preferred (Δχ² ≈ −5.0, a weak formal preference). The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background), both kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the repository.
 
 ---
 
@@ -18,42 +18,43 @@ Current implementation reproduces the expansion history of the mid-to-late Unive
 ```
 README.md
 article/
-  dsic-azamat-zaseev.md
-  dsic-formulas-azamat-zaseev.mmd
+  DSIC - Azamat Zaseev.md
+  dsic_formulas.mmd
   formulas/
     (25 formula images, .png)
   dsic_test/
     dsic_test.py
-    dsic-test-results.md
+    dsic_results.md
     dsic_graph.png
-  dsic_cmb_plugin/
-    dsic-cmb-plugin-azamat-zaseev.md
-    cmb_plugin_test/
-      dsic_cmb_test.py
-      dsic-cmb-test-results.md
-      dsic_cmb_graph.png
 ```
 
 ---
 
-## article/dsic-azamat-zaseev.md
+## article/DSIC - Azamat Zaseev.md
 
-The main DSIC paper.
+The main DSIC paper — a single self-contained document that now merges the former core article and the CMB/gravity plugin into one text. It is organized in three parts, each with its status stated explicitly.
 
-Contains the complete derivation of the core model:
+**Part I — the core** (late Universe, approximately z < 2.3; internally self-contained):
 - dual-scale geometry (S ↔ O)
 - observable projection (μ)
 - scale factor
 - Hubble expansion
 - luminosity distance
 - cosmological observables
-- comparison with observational data
+- comparison with observational data, including a translation of the geometry into the standard Friedmann language (an effective equation of state w_eff(z))
 
-The core model is intended for the late Universe (approximately z < 2.3) and is internally self-contained.
+**Part II — the second floor** (the early Universe; not derived from the core):
+- the detachment threshold μ_d, introduced to extend the model toward the CMB distance while leaving the late-Universe fit unchanged (calibration, zero degrees of freedom)
+- a tentative gravitational space-redistribution module (kept in an appendix as a development sketch, not a result)
+
+**Part III — structure growth** (a survival check, not a derivation from the core):
+- linear growth of density perturbations on the DSIC background in the GR limit, compared with the fσ₈ compilation
+
+The boundary of applicability is stated throughout: the core is the accomplished part; the second floor and the growth check are flagged as exploratory and are not claimed as consequences of the core equations.
 
 ---
 
-## article/dsic-formulas-azamat-zaseev.mmd
+## article/dsic_formulas.mmd
 
 Mermaid source of the complete DSIC formula diagram.
 
@@ -65,35 +66,13 @@ The rendered formula images are in `article/formulas/`.
 
 ## article/dsic_test/
 
-Empirical test of the core model and its reproducibility.
+Empirical test of the model and its reproducibility — now a single unified script and a single write-up covering all three parts.
 
-- `dsic_test.py` — a single self-contained script. It downloads the public Pantheon+SH0ES catalog automatically, has DESI DR2 BAO and the cosmic-chronometer compilation built in (with a self-check against the official tables), and computes χ² with the full covariance for both DSIC and flat ΛCDM at an equal number of free parameters.
-- `dsic-test-results.md` — the write-up of the results: supernovae (anchored fit, Δχ² = +0.05), STAT-ONLY robustness, the joint SN+BAO fit (Δχ² = −5.0), the BAO `D_M`–`D_H` fit, the honest `Om(z)` outcome (does not resolve the models — the sign of Δχ² depends on the `H₀` normalization), and the falsifiable high-z predictions.
-- `dsic_graph.png` — summary figure.
+- `dsic_test.py` — one self-contained script (blocks `[0]`–`[11]`). It downloads the public Pantheon+SH0ES catalog automatically; has DESI DR2 BAO and the cosmic-chronometer compilation built in (with a self-check against the official tables); carries the Planck 2018 reference data for the μ_d calibration (self-checked); and includes the Gold-2017 fσ₈ compilation for the growth test. It computes χ² with the full covariance for both DSIC and flat ΛCDM at an equal number of free parameters. Part II (the μ_d threshold) and Part III (structure growth) run in the same pass.
+- `dsic_results.md` — the write-up of the results: supernovae (anchored fit, Δχ² = +0.05), STAT-ONLY robustness, the joint SN+BAO fit (Δχ² = −5.0), the BAO `D_M`–`D_H` fit, the honest `Om(z)` outcome (does not resolve the models — the sign of Δχ² depends on the `H₀` normalization), the falsifiable high-z predictions, the cosmic-time risk zone (z = 5–12), the second-floor μ_d calibration, and the structure-growth survival check (S8 invariant).
+- `dsic_graph.png` — nine-panel summary figure.
 
----
-
-## article/cmb_plugin/dsic-cmb-plugin-azamat-zaseev.md
-
-An optional extension to the core model.
-
-This document collects ideas that are **not** derived from the DSIC core equations and are therefore intentionally kept separate.
-
-It contains two independent phenomenological modules:
-- **Part A:** the detachment parameter μ_d, introduced to extend the model toward the CMB distance while leaving the late-Universe fit unchanged
-- **Part B:** a tentative gravitational space-redistribution module describing local anisotropic redistribution of space
-
-These extensions are exploratory and are not considered part of the core DSIC model.
-
----
-
-## article/cmb_plugin/cmb_plugin_test/
-
-Separate reproducibility test for the CMB plugin (the detachment parameter μ_d).
-
-- `dsic_cmb_test.py` — a single self-contained script (no external files; the Planck reference data are built in and self-checked).
-- `dsic-cmb-test-results.md` — the write-up. It does **not** prove μ_d; it confirms that the plugin arithmetic is reproducible, that the Planck reference number is correct, that the late Universe (z ≤ z_detach ≈ 4.53) is untouched by the correction, and it states honestly that the parameter has zero degrees of freedom (the amplitude ↔ threshold degeneracy). The value `z_detach ≈ 4.53` is a calibration, not a prediction.
-- `dsic_cmb_graph.png` — summary figure.
+> **Note on runtime.** A full run takes roughly 15–25 minutes: the supernova download (~65 MB), the Pantheon+SH0ES fits (a few minutes), and the growth block `[11]` (a grid scan with numerical ODE integration — the longest step). A long quiet pause between blocks `[10]` and `[11]` is expected; the script is working, not stuck.
 
 ---
 
@@ -105,11 +84,14 @@ Separate reproducibility test for the CMB plugin (the detachment parameter μ_d)
 - no dark energy
 - late-Universe observational tests (see `article/dsic_test/`)
 
-### Extensions
-- CMB detachment parameter (μ_d) — calibration only, zero degrees of freedom (see `article/cmb_plugin/`)
-- phenomenological gravity module
+### Second floor (in the paper, not derived from the core)
+- CMB detachment threshold (μ_d) — calibration only, zero degrees of freedom
+- phenomenological gravity module (development sketch, kept in an appendix)
 
-These extensions remain separate until they can be independently derived or observationally validated.
+### Structure growth
+- survival check on the DSIC background (GR-limit growth vs fσ₈, Gold-2017); the data constrain the invariant S8 rather than Ω_m0 and σ₈ separately — not a derivation from the core
+
+The second floor and the growth check remain flagged as separate from the core until they can be independently derived or observationally validated.
 
 ---
 
