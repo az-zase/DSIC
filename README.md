@@ -21,7 +21,7 @@ article/
   DSIC - Azamat Zaseev.md
   dsic_formulas.mmd
   formulas/
-    (25 formula images, .png)
+    (31 formula images, .png)
   dsic_test/
     dsic_test.py
     dsic_results.md
@@ -72,7 +72,7 @@ Empirical test of the model and its reproducibility — now a single unified scr
 - `dsic_results.md` — the write-up of the results: supernovae (anchored fit, Δχ² = +0.05), STAT-ONLY robustness, the joint SN+BAO fit (Δχ² = −5.0), the BAO `D_M`–`D_H` fit, the honest `Om(z)` outcome (does not resolve the models — the sign of Δχ² depends on the `H₀` normalization), the falsifiable high-z predictions, the cosmic-time risk zone (z = 5–12), the second-floor μ_d calibration, and the structure-growth survival check (S8 invariant).
 - `dsic_graph.png` — nine-panel summary figure.
 
-> **Note on runtime.** A full run takes roughly 15–25 minutes: the supernova download (~65 MB), the Pantheon+SH0ES fits (a few minutes), and the growth block `[11]` (a grid scan with numerical ODE integration — the longest step). A long quiet pause between blocks `[10]` and `[11]` is expected; the script is working, not stuck.
+> **Note on runtime.** A full run takes roughly 2–5 minutes: the supernova download (~65 MB), the Pantheon+SH0ES fits (a few minutes), and the growth block `[11]` (a grid scan with numerical ODE integration — the longest step). A long quiet pause between blocks `[10]` and `[11]` is expected; the script is working, not stuck.
 
 ---
 
