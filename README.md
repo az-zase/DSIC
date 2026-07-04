@@ -103,7 +103,7 @@ Includes:
 - high-redshift extrapolation tests
 - structure growth evolution
 
-Runtime: 2–5 minutes.
+Runtime: 3–5 minutes.
 
 ---
 
