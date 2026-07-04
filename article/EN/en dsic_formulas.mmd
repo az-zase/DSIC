@@ -1,0 +1,113 @@
+%%{init: {'flowchart': {'htmlLabels': true}, 'themeVariables': {'fontFamily': 'Segoe UI, Arial, sans-serif'}}}%%
+flowchart TB
+
+classDef L0 fill:#6C5CE7,stroke:#4B3FB0,color:#fff,stroke-width:1px;
+classDef L1 fill:#2E5A88,stroke:#1E3E60,color:#fff,stroke-width:1px;
+classDef L2 fill:#138D75,stroke:#0B6150,color:#fff,stroke-width:1px;
+classDef L3 fill:#B9770E,stroke:#8A5A0A,color:#fff,stroke-width:1px;
+classDef RES fill:#34495E,stroke:#22303C,color:#fff,stroke-width:1px;
+classDef CMB fill:#FBEAEA,stroke:#C0392B,color:#C0392B,stroke-width:1.5px,stroke-dasharray:5 4;
+classDef INV fill:#ECF0F1,stroke:#95A5A6,color:#2C3E50,stroke-width:1px,stroke-dasharray:3 3;
+classDef LEG fill:#FFFFFF,stroke:#BBBBBB,color:#333,stroke-width:1px;
+classDef L2F fill:#7D3C98,stroke:#5B2C6F,color:#fff,stroke-width:1px;
+classDef GRW fill:#1F618D,stroke:#154360,color:#fff,stroke-width:1px;
+linkStyle default stroke:#138D75,stroke-width:1.5px;
+
+LEGEND["<div style='width:320px;text-align:left'><b style='font-size:15px'>LAYER LEGEND</b><br/><span style='font-size:12px'>🟣 layer 0 — the flow (time)<br/>🔵 layer 1 — the core (signed)<br/>🟢 layer 2 — the projection (moduli)<br/>🟠 layer 3 — physics (observables)<br/>🟪 Part II — the second tier (binding, P6)<br/>🟦 Part III — structure growth (fσ₈)<br/>⬜ gray dashed — invariant checks<br/>🟥 red dashed — the core's boundary</span></div>"]
+
+ACT["<div style='width:300px;text-align:center'><b style='font-size:19px'>𝒮[φ] = ∫ ½ φ̇² dt</b><br/><span style='font-size:12px'>the action of the free flow φ; varying it gives φ̈ = 0 — nothing accelerates the flow</span></div>"]
+PHI["<div style='width:280px;text-align:center'><b style='font-size:19px'>φ = ω·t</b><br/><span style='font-size:12px'>the phase grows uniformly at rate ω — irreversible time itself, the model's only dynamics</span></div>"]
+
+S["<div style='width:280px;text-align:center'><b style='font-size:19px'>S = R·sin(φ/2)</b><br/><span style='font-size:12px'>the scale of space (signed); an odd function of φ, it passes through zero and changes sign</span></div>"]
+O["<div style='width:280px;text-align:center'><b style='font-size:19px'>O = R·cos(φ/2)</b><br/><span style='font-size:12px'>the scale of objectness (signed); shifted by ¼ turn relative to S</span></div>"]
+NORM["<div style='width:300px;text-align:center'><b style='font-size:19px'>S² + O² = R²</b><br/><span style='font-size:12px'>the master law: the norm is constant (a circle); scale only flows between the poles</span></div>"]
+W["<div style='width:300px;text-align:center'><b style='font-size:17px'>W = S·O′ − O·S′ = −R²/2</b><br/><span style='font-size:12px'>the constant Wronskian: one pole at zero — the other at its maximum (quadrature)</span></div>"]
+SIG["<div style='width:300px;text-align:center'><b style='font-size:16px'>σ = sign(S), sign(O)<br/>O_full = O · σ_S</b><br/><span style='font-size:12px'>the sign phase; objectness inherits the sign of space at the Mush crossing</span></div>"]
+
+PROJ["<div style='width:300px;text-align:center'><b style='font-size:17px'>π : O(φ) ↦ |O(φ)|</b><br/><span style='font-size:12px'>the modulus operation: the sign is cut off, the mirror branch is unobservable in principle</span></div>"]
+P["<div style='width:290px;text-align:center'><b style='font-size:18px'>P = |S| = R·√(1−μ²)</b><br/><span style='font-size:12px'>observable space (≥0); light propagates along this pole</span></div>"]
+Q["<div style='width:280px;text-align:center'><b style='font-size:18px'>Q = |O| = R·μ</b><br/><span style='font-size:12px'>observable objectness (≥0); the observer, their ruler and clock are made of it</span></div>"]
+MU["<div style='width:290px;text-align:center'><b style='font-size:18px'>μ = |cos(φ/2)| = Q/R</b><br/><span style='font-size:12px'>the observable phase ∈ [0,1] — the fraction of objectness; the master variable of all the physics</span></div>"]
+PQ["<div style='width:280px;text-align:center'><b style='font-size:18px'>P² + Q² = R²</b><br/><span style='font-size:12px'>the same norm in the projection: the modulus preserves the circle (a layer check)</span></div>"]
+
+LT["<div style='width:320px;text-align:center'><b style='font-size:15px'>L(μ) ∝ μ ;  dτ = dt/μ ;  c = const</b><br/><span style='font-size:12px'>the observer's scales: the ruler stretches with objectness, the clock inversely to it; c = const pins both</span></div>"]
+B["<div style='width:300px;text-align:center'><b style='font-size:19px'>b(μ) = √(1−μ²) / μ²</b><br/><span style='font-size:12px'>the scale factor — the heart of the model; all observable physics is derived from it</span></div>"]
+Z["<div style='width:290px;text-align:center'><b style='font-size:17px'>1 + z = b(μ₀) / b(μ_e)</b><br/><span style='font-size:12px'>redshift — the ratio of the scale today to the scale at the moment of emission</span></div>"]
+H["<div style='width:290px;text-align:center'><b style='font-size:17px'>|H_τ| = (2−μ²) / (1−μ²)</b><br/><span style='font-size:12px'>the expansion rate (units of k): at the Mush → ∞, at the bounce → 2</span></div>"]
+Q3["<div style='width:320px;text-align:center'><b style='font-size:16px'>q = (−μ⁴+6μ²−4)/(μ⁴−4μ²+4)</b><br/><span style='font-size:12px'>the deceleration parameter; changes sign at z_t≈0.77 — acceleration from geometry, no dark energy</span></div>"]
+RS["<div style='width:330px;text-align:center'><b style='font-size:13px'>r = (μ⁶−16μ⁴+20μ²−8)/(μ⁶−6μ⁴+12μ²−8)<br/>s = (r−1) / [3(q−½)]</b><br/><span style='font-size:12px'>the statefinder; at μ₀=0.76: r≈0.55, s≈0.16 — a departure from the ΛCDM point (r=1, s=0)</span></div>"]
+CHI["<div style='width:340px;text-align:center'><b style='font-size:14px'>χ = (c/k)·[√(1−μ₀²)/μ₀²]·[√(1−μ₀²) − √(1−μ_e²)]</b><br/><span style='font-size:12px'>the comoving distance in closed form; the particle horizon is finite by itself</span></div>"]
+DL["<div style='width:330px;text-align:center'><b style='font-size:15px'>d_L = (1+z)·χ ;  DM = 5·log₁₀(d_L/10pc)</b><br/><span style='font-size:12px'>the luminosity distance and the distance modulus — this is what is compared with the supernovae</span></div>"]
+OM["<div style='width:320px;text-align:center'><b style='font-size:15px'>Om(z) = (E²−1)/((1+z)³−1)</b><br/><span style='font-size:12px'>a diagnostic, E = H/H₀; flat in ΛCDM, decreasing in DSIC — a falsifiable signature</span></div>"]
+
+FIT["<div style='width:340px;text-align:center'><b style='font-size:15px'>CONFRONTATION WITH DATA</b><br/><span style='font-size:12px'>Pantheon+SH0ES (1657 SNe, anchor + covariance): Δχ² = +0.05 vs ΛCDM, χ²/dof = 0.878, H₀ ≈ 73, μ₀ = 0.76 — indistinguishable from ΛCDM. + DESI BAO, chronometers, age, z_t — all at a single μ₀ ≈ 0.76</span></div>"]
+CMBN["<div style='width:320px;text-align:center'><b style='font-size:14px'>THE CORE'S BOUNDARY: the relic radiation (CMB)</b><br/><span style='font-size:12px'>at z=1090: 10936 vs 13873 Mpc, a 21% shortfall — the limit of the CORE (Part I); a consequence of the finite particle horizon (it saturates by z≈10). The second tier (below) closes this shortfall</span></div>"]
+
+P6["<div style='width:320px;text-align:center'><b style='font-size:15px'>POSTULATE P6 — binding / detachment</b><br/><span style='font-size:12px'>the new entity of the second tier: until the monolith of objectness has parted, light has no path. The form of the correction is fixed by principle (amplitude A≡1, a sharp threshold)</span></div>"]
+CORR["<div style='width:330px;text-align:center'><b style='font-size:15px'>correction ∝ 1/P = 1/√(1−μ²)</b><br/><span style='font-size:12px'>the addition to the path in the stuck-together phase of the medium; the integral = arcsin μ. Identically zero at μ ≤ μ_d (the late Universe is untouched)</span></div>"]
+MUD["<div style='width:330px;text-align:center'><b style='font-size:16px'>μ_d = 0.9806  (z_detach ≈ 4.53)</b><br/><span style='font-size:12px'>the detachment threshold — a measured constant of the second tier; calibrated against ONE observation (the angle θ*), zero degrees of freedom</span></div>"]
+DMC["<div style='width:340px;text-align:center'><b style='font-size:13px'>D_M corr = D_M + (c/k)·[arcsin μ_cmb − arcsin μ_d]</b><br/><span style='font-size:12px'>the corrected distance to the CMB = 13873 Mpc; 100·θ_model = 1.04110 (Planck: 1.04110) — exact closure</span></div>"]
+
+GROW["<div style='width:340px;text-align:center'><b style='font-size:13px'>δ″ + (2 + dlnH/dlna)·δ′ − 1½·Ω_m(a)·δ = 0</b><br/><span style='font-size:12px'>linear perturbation growth on the DSIC background (GR limit); f = dlnδ/dlna. Status — a survival test, not a derivation from the core</span></div>"]
+FS8["<div style='width:330px;text-align:center'><b style='font-size:15px'>fσ₈(z) = f·σ₈·δ(z)/δ(0)</b><br/><span style='font-size:12px'>checked against Gold-2017 (18 points): χ²/dof ≈ 0.7 — no worse than ΛCDM. The data are degenerate → the invariant S8 = 0.761 ± 0.013</span></div>"]
+
+ACT --> PHI
+PHI --> S
+PHI --> O
+S --> NORM
+O --> NORM
+S -.-> W
+O -.-> W
+S --> SIG
+O --> SIG
+
+S --> PROJ
+O --> PROJ
+SIG -.->|the sign is cut off| PROJ
+PROJ --> P
+PROJ --> Q
+P --> MU
+Q --> MU
+P -.-> PQ
+Q -.-> PQ
+
+MU --> LT
+MU --> B
+LT --> B
+B --> Z
+B --> H
+B --> Q3
+B --> CHI
+B --> RS
+Q3 --> RS
+Z --> CHI
+CHI --> DL
+Z --> DL
+H --> OM
+Z --> OM
+
+DL --> FIT
+H --> FIT
+OM --> FIT
+CHI -.-> CMBN
+Z -.-> CMBN
+
+CMBN --> P6
+P6 --> CORR
+CORR --> MUD
+MUD --> DMC
+CMBN -.->|target θ*| DMC
+
+H --> GROW
+GROW --> FS8
+
+class LEGEND LEG;
+class ACT,PHI L0;
+class S,O,NORM,SIG L1;
+class W,PQ INV;
+class PROJ,P,Q,MU L2;
+class LT,B,Z,H,Q3,RS,CHI,DL,OM L3;
+class FIT RES;
+class CMBN CMB;
+class P6,CORR,MUD,DMC L2F;
+class GROW,FS8 GRW;
