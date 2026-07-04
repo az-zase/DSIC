@@ -10,12 +10,11 @@ Rather than introducing dark energy, DSIC interprets the observed late-time acce
 
 The core implementation reproduces the expansion history of the mid-to-late Universe using one free cosmological parameter. It matches ΛCDM on the full Pantheon+SH0ES supernova sample (Δχ² ≈ +0.05), while also providing consistent fits to BAO, cosmic chronometers, the transition redshift, and the age of the Universe. On the joint SN+BAO fit DSIC is marginally preferred (Δχ² ≈ −5.0, a weak formal preference).
 
-The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background). Both are kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the repository.
-
----
+The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background). Both are kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the 
 
 ## Repository structure
 
+```
 README.md
 article/
   DSIC - Azamat Zaseev.md
@@ -29,7 +28,7 @@ article/
     en_dsic_test.py
     en dsic_results.md
     en dsic_graph.png
-
+```
 ---
 
 ## article/DSIC - Azamat Zaseev.md
