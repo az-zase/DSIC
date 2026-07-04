@@ -283,7 +283,7 @@ def mu_e_of_z(zv, mu0):
     """Inversion of 1+z = b(μ₀)/b(μ_e) on the physical reception branch.
 
     At z=0 the root equals μ₀ exactly and lies on the edge of the brentq
-    bracket (both ends give the same sign) — we return it analytically.
+    bracket (both ends give the same sign) — it is returned analytically.
     The fits never touch this case (SNe have z > 0.01); the behavior at
     z > 0 is unchanged."""
     if zv <= 1e-14:
@@ -929,7 +929,7 @@ def step_trace_and_horizon(mu_d, z_det):
 # DSIC — a check of structure growth (linear growth, fσ8) against RSD data.
 # Block [11] for dsic_full_test.py.
 #
-# Idea: DSIC sets the background H(z). On this background we solve the STANDARD
+# Idea: DSIC sets the background H(z). On this background I solve the STANDARD
 # equation of linear growth of matter perturbations (sub-horizon, GR limit):
 #
 #     d²δ/d(lna)² + (2 + dlnH/dlna) dδ/d(lna) - (3/2) Ω_m(a) δ = 0
