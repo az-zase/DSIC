@@ -254,7 +254,7 @@ where `μ₀` is the phase of reception ("today") and `μ_e` the phase of emissi
        └───── pole P (space) ─────┘ └ object scale ┘
 ```
 
-— the first factor accounts for the stretching of space along the path, the second for the observer's object scale (clock + ruler). Their alternating dominance along the cycle is precisely the mechanism of the observed kinematics (§5.4). Note also the physics of the limit: near the Mush the pole `P` contracts to almost nothing — light simply has almost nothing left to propagate through; the path through space collapses, and the observed picture rests on the object scale alone. Light does not "slow down" — the stage it travelled on vanishes.
+— the first factor accounts for the stretching of space along the path, the second for the observer's object scale (clock + ruler). Their alternating dominance along the cycle is precisely the mechanism of the observed kinematics (§5.4). Note also the physics of the limit: near the Mush the pole `P` contracts to almost nothing — light simply has almost nothing left to propagate through; the path through space collapses, and the observed picture rests on the object scale alone. Light does not "slow down" — the stage it traveled on vanishes.
 
 The alternative — a "redshift by a single ruler", `1 + z = μ₀/μ_e` — is rejected: it accounts only for contribution (3) and ignores the path (1) and the clock (2), whereas the photon lives through all three. The observer's full metric is `b`, so the redshift goes by `b`, not by `L`.
 
