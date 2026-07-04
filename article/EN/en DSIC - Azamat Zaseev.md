@@ -19,7 +19,7 @@ The early Universe is delegated to the **second tier** of the model (Part II): t
 
 ## 1. Introduction
 
-The transition of the cosmological expansion from deceleration to acceleration at `z_t ≈ 0.6–0.8` [1, 2] is a firmly established observational fact. The standard model describes it by introducing a component with negative pressure: two density parameters `Ω_m` and `Ω_Λ` set the shape of the expansion curve, but the constant Λ itself remains a postulate without derivation. A natural question arises: can the same expansion curve emerge without an energy ingredient — from nothing but the geometry of what we call "scale"?
+The transition of the cosmological expansion from deceleration to acceleration at `z_t ≈ 0.6–0.8` [1, 2] is a firmly established observational fact. The standard model describes it by introducing a component with negative pressure: two density parameters `Ω_m` and `Ω_Λ` set the shape of the expansion curve, but the constant Λ itself remains a postulate without derivation. A natural question arises: can the same expansion curve emerge without an energy ingredient — from nothing but the geometry of what I call "scale"?
 
 DSIC answers this question in the affirmative, in the form of an explicit construction. The model starts from the premise that no absolute scale exists, either for objects or for space: only their ratio is observable. Space and objectness are treated as two poles of a single conserved norm, flowing along a circle under a single uniform flow. An observer located inside the system and itself made of objectness has, in principle, no access to the sign of quantities or to their absolute values — only to moduli and ratios. The requirement that the speed of light be constant in the observer's units uniquely fixes their clock, and from the ruler and the clock the observable scale factor is derived:
 
@@ -38,7 +38,7 @@ The exposition follows a strict layer discipline, and the layer a symbol belongs
 - **layer 2 — the projection**: unsigned quantities `P, Q, μ`, accessible to the internal observer; they are born of the single operation `|·|`; bounces and cycles exist only here;
 - **layer 3 — observable physics**: `b, z, H_τ, q, χ, d_L` — the interpretation of the projection in physical units through the observer's scales.
 
-Since the model is built in its own language, we provide a dictionary of correspondences between its terms and familiar physical notions. The terms are deliberately retained (they carry the model's ontology), but each is given a standard analogue:
+Since the model is built in its own language, I provide a dictionary of correspondences between its terms and familiar physical notions. The terms are deliberately retained (they carry the model's ontology), but each is given a standard analogue:
 
 | DSIC term | what it is | closest familiar image |
 |---|---|---|
@@ -360,7 +360,7 @@ Not a single new entity is introduced here: `w_eff` is entirely determined by th
 | midpoint | `0.5` | `−0.89` | close to de Sitter |
 | object bounce | `→ 0` | `−1` | exactly a cosmological constant |
 
-Let us stress the meaning of this translation. DSIC does **not postulate** a medium with such a `w(z)` — it obtains this curve from the pure geometry of the flow of scale; `w_eff(μ)` is merely its shadow in GR language. Where ΛCDM inserts `Ω_Λ` by hand, DSIC reproduces the equivalent dynamics with a single geometric parameter `μ₀`. The translation does not strip the model of its ontology — it merely makes it commensurable with the standard formalism and shows that DSIC does not conflict with general relativity at the level of the background metric, but fits into it as a universe with a dynamical `w(z)`.
+Let me stress the meaning of this translation. DSIC does **not postulate** a medium with such a `w(z)` — it obtains this curve from the pure geometry of the flow of scale; `w_eff(μ)` is merely its shadow in GR language. Where ΛCDM inserts `Ω_Λ` by hand, DSIC reproduces the equivalent dynamics with a single geometric parameter `μ₀`. The translation does not strip the model of its ontology — it merely makes it commensurable with the standard formalism and shows that DSIC does not conflict with general relativity at the level of the background metric, but fits into it as a universe with a dynamical `w(z)`.
 
 > Remark. Agreement of the background kinematics with some FRW model does not imply agreement at the level of perturbations and structure growth: a dynamical `w(z)` fixes the background but does not uniquely determine the evolution of inhomogeneities (see §12). The translation concerns precisely the background.
 
@@ -486,7 +486,7 @@ DSIC does not "refute" ΛCDM. On late-time data the models are statistically ind
 
 ## 10. The second entity and the detachment postulate
 
-The core runs up against one and the same missing entity from two sides. From the side of the early Universe: the core geometry falls short of the distance to the CMB by ~21% (§11.1) — what is missing is the physics of the phase in which matter is still stuck together, and "being stuck together" is a state of binding. From the late side: the qualitative picture in which space accrues predominantly between objects weakly bound by gravity (Appendix B) requires a measure of that bond. Both superstructures — the early detachment and the late distribution of space — are two manifestations of one new entity: **binding**. We introduce it once.
+The core runs up against one and the same missing entity from two sides. From the side of the early Universe: the core geometry falls short of the distance to the CMB by ~21% (§11.1) — what is missing is the physics of the phase in which matter is still stuck together, and "being stuck together" is a state of binding. From the late side: the qualitative picture in which space accrues predominantly between objects weakly bound by gravity (Appendix B) requires a measure of that bond. Both superstructures — the early detachment and the late distribution of space — are two manifestations of one new entity: **binding**. I introduce it once.
 
 **P6 (postulate of binding and detachment).**
 
@@ -539,7 +539,7 @@ The threshold is fixed by the requirement that the shortfall be closed exactly:
 D_M_corr(μ_cmb) = 13872.8 Mpc   (= d_LSS Planck, exact closure)
 ```
 
-For honesty's sake, let us show what P6 resolves. Without the amplitude being fixed, the equation `A·(c/k)·[arcsin μ_cmb − arcsin μ_d] = shortfall` has a curve of solutions — any amplitude yields its own `μ_d` with the same distance to the CMB:
+For honesty's sake, let me show what P6 resolves. Without the amplitude being fixed, the equation `A·(c/k)·[arcsin μ_cmb − arcsin μ_d] = shortfall` has a curve of solutions — any amplitude yields its own `μ_d` with the same distance to the CMB:
 
 | `A` | `μ_d` | `z_detach` |
 |---|---|---|
@@ -618,13 +618,13 @@ The core's picture also offers a natural, though not rigorously derivable, mecha
 
 ### 11.7 Interpretation of the relic imprint
 
-The imprint is a freeze-frame of the shape of objectness at the late stage of the Mush, when space had already begun to seep through and light could for the first time escape the monolith: the contrast on the map is the density contrast of the seeping space. The Mush at that point is not a strictly zero state but an offset from zero: `μ_cmb ≈ 0.9999995` — space has already seeped through slightly. The sign of the contrast in this picture: **cold/dark patches ↔ dense objectness (the monolith), hot ones ↔ pores of space that have seeped through**; the smallness of the contrast, `~10⁻⁵`, is qualitatively consistent with the pores of space only just being born near the threshold. For sobriety's sake, let us note: this sign coincides with the standard large-scale Sachs–Wolfe effect for adiabatic perturbations (overdense regions look colder) — a pleasant consistency, but not evidence, since the amplitude and the spectrum are not derived from the model. Finally, an important distinction: `μ_cmb` is the observed "floor" of the early zone; `μ_d` (`z ≈ 4.53`) is its late edge, the detachment threshold.
+The imprint is a freeze-frame of the shape of objectness at the late stage of the Mush, when space had already begun to seep through and light could for the first time escape the monolith: the contrast on the map is the density contrast of the seeping space. The Mush at that point is not a strictly zero state but an offset from zero: `μ_cmb ≈ 0.9999995` — space has already seeped through slightly. The sign of the contrast in this picture: **cold/dark patches ↔ dense objectness (the monolith), hot ones ↔ pores of space that have seeped through**; the smallness of the contrast, `~10⁻⁵`, is qualitatively consistent with the pores of space only just being born near the threshold. For sobriety's sake, let me note: this sign coincides with the standard large-scale Sachs–Wolfe effect for adiabatic perturbations (overdense regions look colder) — a pleasant consistency, but not evidence, since the amplitude and the spectrum are not derived from the model. Finally, an important distinction: `μ_cmb` is the observed "floor" of the early zone; `μ_d` (`z ≈ 4.53`) is its late edge, the detachment threshold.
 
 ---
 
 ## 12. Structure growth: a check on the DSIC background
 
-Earlier (§8), structure growth was declared outside the model. Here a minimal, honestly bounded step is taken: we check whether the DSIC **background** is compatible with the standard growth of linear perturbations — not deriving the growth equation from the core, but taking it in the GR limit on the DSIC geometry. This is a consistency check, not a derivation.
+Earlier (§8), structure growth was declared outside the model. Here a minimal, honestly bounded step is taken: I check whether the DSIC **background** is compatible with the standard growth of linear perturbations — not deriving the growth equation from the core, but taking it in the GR limit on the DSIC geometry. This is a consistency check, not a derivation.
 
 On a background with rate `H(z)` (§5.4), the matter density contrast `δ` in the sub-horizon GR limit obeys the standard equation
 
@@ -632,7 +632,7 @@ On a background with rate `H(z)` (§5.4), the matter density contrast `δ` in th
 d²δ/d(ln a)² + [2 + dln H/dln a] · dδ/d(ln a) − (3/2) Ω_m(a) · δ = 0 ,
 ```
 
-where `Ω_m(a) = Ω_m0 · a⁻³ / E(a)²`, `E = H/H₀`. Since the core introduces no densities, `Ω_m0` enters here as a growth parameter. From the solution we obtain the growth rate `f = dln δ/dln a` and the observable combination `fσ₈(z) = f(z)·σ₈,₀·δ(z)/δ(0)`, compared with measurements of redshift-space distortions (RSD).
+where `Ω_m(a) = Ω_m0 · a⁻³ / E(a)²`, `E = H/H₀`. Since the core introduces no densities, `Ω_m0` enters here as a growth parameter. From the solution one obtains the growth rate `f = dln δ/dln a` and the observable combination `fσ₈(z) = f(z)·σ₈,₀·δ(z)/δ(0)`, compared with measurements of redshift-space distortions (RSD).
 
 The check is performed on the **"Gold-2017"** compilation (18 weakly correlated `fσ₈` points; for the three WiggleZ points [15] at `z = 0.44, 0.60, 0.73` their covariance matrix is taken into account). The key feature of `fσ₈` data is a degeneracy: they constrain not `Ω_m0` and `σ₈` separately but their combination `S₈ = σ₈·√(Ω_m0/0.3)`. The result is therefore reported through `S₈`:
 
