@@ -65,7 +65,7 @@ Part I — core model (late Universe, z < 2.3):
 - cosmological observables
 - mapping to standard Friedmann form via an effective equation of state w_eff(z)
 
-Part II — second floor (early Universe):
+Part II — second tier (early Universe):
 - detachment threshold μ_d extending the model toward the CMB distance (calibration only)
 - gravitational space-redistribution module (appendix, exploratory)
 
