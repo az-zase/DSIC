@@ -18,6 +18,7 @@ The paper additionally carries a **second floor** (the early Universe, via the d
 README.md
 article/
   DSIC - Azamat Zaseev.md
+  Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
   dsic_formulas.mmd
   dsic_test.py
   dsic_results.md
