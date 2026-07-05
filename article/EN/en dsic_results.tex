@@ -1,0 +1,522 @@
+\documentclass[a4paper,10pt]{article}
+% ===== Preamble: DSIC test report =====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{url}
+
+% --- Halve the margins so more fits on the page ---
+% Default article a4 margins are ~1 inch+; geometry lets us cut them roughly in half.
+\usepackage[a4paper,margin=1.9cm]{geometry}
+
+% --- helper for wide tables placed sideways-free but full width ---
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{document}
+
+\title{DSIC --- Empirical verification results (Part I + Part II + Part III)}
+\date{}
+\maketitle
+
+\noindent\textbf{Model:} Dual Scale Inversion Cosmology (DSIC)\\
+\textbf{Author:} Azamat Zaseev\\
+\textbf{Script:} \texttt{dsic\_test.py} (single, self-contained; blocks \texttt{[0]}--\texttt{[11]})\\
+\textbf{Comparison:} DSIC versus flat $\Lambda$CDM on identical data, with an equal number of free parameters.
+
+\begin{quote}
+\textbf{In brief.} The internal identities of the core pass machine verification to $10^{-8}$ accuracy. On the expansion geometry of the late Universe ($z < 2.3$), DSIC with the single parameter $\mu_0 = 0.7600 \pm 0.0091$ is statistically indistinguishable from $\Lambda$CDM on the supernovae and slightly preferred on the joint SN+BAO fit; the $\Lambda$CDM branch of the pipeline reproduces the published Pantheon+SH0ES values --- a pipeline validation. The $Om(z)$ diagnostic on current data \textbf{does not discriminate} between the models (the sign of $\Delta\chi^2$ depends on the $H_0$ normalization). The second tier (the detachment threshold $\mu_d$) closes the distance to the CMB exactly, leaving the late Universe identically untouched; its status is a calibration with the form fixed by postulate P6. Structure growth ($f\sigma_8$) on the DSIC background in the GR limit describes the Gold-2017 compilation no worse than $\Lambda$CDM ($\chi^2/\text{dof} \approx 0.7$); the data are degenerate in $(\Omega_{m0}, \sigma_8)$, so the invariant $S_8 = 0.761 \pm 0.013$ is reported --- the status is a survival test, not a derivation from the core. The most stringent risk zone, stated as a number, is the compressed cosmic time at $z = 5\text{--}12$ (at $z = 7.5$, 0.42 Gyr are available versus 0.71 in $\Lambda$CDM). The results are reproducible: the script downloads the public catalogs itself and computes $\chi^2$ with the full covariance.
+\end{quote}
+
+% ============================================================
+% Section 1 — wide summary table on its own page
+% ============================================================
+\clearpage
+\section{Summary of results}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{2.5cm}p{3.0cm}p{1.7cm}p{2.4cm}p{2.4cm}p{2.9cm}@{}}
+\toprule
+\textbf{Probe} & \textbf{Data / block} & \textbf{Metric} & \textbf{DSIC} & \textbf{$\Lambda$CDM} & \textbf{Verdict} \\
+\midrule
+Core consistency & identities, \texttt{[0b]} & max deviation & $\le 5.7{\cdot}10^{-8}$ & --- & all identities hold \\
+Supernovae (anchor + explicit $M$) & Pantheon+SH0ES (1657 SNe, 77 calib.), \texttt{[1]} & $\chi^2/\text{dof}$ & 0.8783 & 0.8783 & indistinguishable ($\Delta\chi^2 = +0.05$) \\
+Parameter uncertainties & $\chi^2$ Hessian, \texttt{[1]} & $1\sigma$ & $\mu_0 = 0.7600 \pm 0.0091$ & $\Omega_m = 0.3308 \pm 0.0180$ & parameter measured (${\sim}1.2\%$) \\
+Robustness to error treatment & STAT-ONLY, \texttt{[2]} & $\Delta\chi^2$ & --- & --- & robust ($\Delta\chi^2 = -0.39$) \\
+SN + BAO joint & + DESI DR2 (6 bins), \texttt{[3]} & $\Delta\chi^2$ (total) & --- & --- & DSIC better by $-5.0$ (weak) \\
+BAO $D_M$--$D_H$ & DESI DR2 ($12{\times}12$ cov.), \texttt{[3]} & $\chi^2/\text{dof}$ & 1.04 & 1.36 & DSIC no worse \\
+$Om(z)$ diagnostic & chronometers + DESI $D_H/r_d$, \texttt{[4]} & sign of $\Delta\chi^2$ & --- & --- & \textbf{does not discriminate} (depends on $H_0$) \\
+High $z$ ($z > 3$) & prediction, \texttt{[5]} & $E(z)$, $D_H/r_d$ & diverges & --- & falsifiable \\
+Cosmic time & $t(z)$ at $z = 5\text{--}12$, \texttt{[6]} & fraction of $\Lambda$CDM & $0.68 \to 0.48$ & 1 & \textbf{the core's risk zone} (as a number) \\
+Planck reference data & $d_{\text{LSS}} = r^*/\theta^*$, \texttt{[7]} & consistency & --- & --- & verified (0.00\%) \\
+Distance to the CMB & closure via $\theta^*$, \texttt{[8]} & $100{\cdot}\theta_{\text{model}}$ & 1.04110 & --- & exact (by constr.\ of $\mu_d$) \\
+Late Universe under $\mu_d$ & correction at $z \le 4.53$, \texttt{[9]} & Mpc & 0.00 & --- & untouched (identically) \\
+Degrees of freedom of $\mu_d$ & $A \leftrightarrow \mu_d$ degeneracy, \texttt{[9]} & dof & 0 & --- & calibration, form from P6 \\
+P6 consistency & JWST galaxies vs threshold, \texttt{[10]} & --- & --- & --- & flag: ``average medium'' formulation \\
+Structure growth $f\sigma_8$ & Gold-2017 (18 points), \texttt{[11]} & $\chi^2/\text{dof}$ & 0.70 & ${\sim}0.7$ & DSIC bkg no worse (survival test) \\
+The $S_8$ invariant & $(\Omega_{m0}, \sigma_8)$ degeneracy, \texttt{[11]} & $1\sigma$ & $0.761 \pm 0.013$ & $0.76\text{--}0.83$ (obs.) & within the observed range \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In all fits, DSIC and $\Lambda$CDM have \textbf{the same number of free parameters}, so $\Delta\chi^2 = \Delta\text{AIC} = \Delta\text{BIC}$.
+
+\clearpage
+
+% ============================================================
+\section{Core consistency: machine verification of the identities}
+
+Block \texttt{[0b]} verifies that the observable physics of the core is internally closed --- distances, rate, and kinematics follow from one geometry without inconsistencies:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}p{9.5cm}p{5.5cm}@{}}
+\toprule
+\textbf{Identity} & \textbf{Result} \\
+\midrule
+$b(\mu)$ strictly decreasing on $(\mu_0, 1)$ --- the inversion $z \to \mu_e$ is well defined & OK \\
+$D_H = d\chi/dz$ (comoving $D_H = c/H$) & max deviation $5.7{\cdot}10^{-8}$ \\
+closed-form $\chi(\mu)$ = numerical $\int c\, dz'/H(z')$ & max deviation $4.4{\cdot}10^{-12}$ \\
+$q(\mu_{\text{cross}}) = 0$ at the exact root $\mu_{\text{cross}} = \sqrt{3-\sqrt{5}} = 0.874032$ & OK; $z_t = 0.769$ \\
+age: $t_0 H_0 = \ln(1/\mu_0)\cdot(2-\mu_0^2)/(1-\mu_0^2) = 0.9241$ & $t_0 = 13.41$ Gyr at $H_0 = 67.4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The closed-form formulas of the paper and the numerical geometry agree at the level of machine precision: the expansion rate, the distances, and the transition point are one and the same geometry, not independent fits.
+
+% ============================================================
+\section{Supernovae: the distance diagram}
+
+\subsection{Anchored fit: calibrators + $M$ as an explicit parameter}
+
+The full Pantheon+SH0ES catalog (1701 SNe; 1657 enter the fit, including 77 calibrators with Cepheid distances as the absolute anchor). The calibrators are not discarded --- they pin the absolute scale; $M$ is fitted explicitly; $H_0$ is a genuine inference from the anchor. The full STAT+SYS covariance matrix. Three free parameters for each model ($\mu_0$/$\Omega_m$, $H_0$, $M$).
+\begin{align*}
+\text{DSIC}: &\quad \mu_0 = 0.7600 \pm 0.0091,\;\; H_0 = 73.35 \pm 1.01,\;\; M = -19.243 \pm 0.030,\;\; \chi^2/\text{dof} = 0.8783 \\
+\Lambda\text{CDM}: &\quad \Omega_m = 0.3308 \pm 0.0180,\;\; H_0 = 73.53 \pm 1.02,\;\; M = -19.244 \pm 0.030,\;\; \chi^2/\text{dof} = 0.8783
+\end{align*}
+\begin{equation*}
+\Delta\chi^2 = \Delta\text{AIC} = \Delta\text{BIC} = +0.05
+\end{equation*}
+The uncertainties are $1\sigma$ from the Hessian of $\chi^2$ at the minimum ($C = 2H^{-1}$); the model parameter is measured to ${\sim}1.2\%$.
+
+On fully calibrated data, DSIC is statistically \textbf{indistinguishable} from $\Lambda$CDM ($|\Delta\chi^2| \ll 2$). The one-parameter geometry of $\mu_0$ reproduces the same distance--redshift relation as $\Lambda$CDM with the density parameter $\Omega_m$ --- without dark energy. $H_0 \approx 73$ inherits the familiar ``Hubble tension'' against the early Universe ($H_0 \approx 67$) --- identically in both models: DSIC creates no new tension and removes no existing one.
+
+\begin{quote}
+\textbf{Pipeline validation.} The $\Lambda$CDM branch of the same pipeline reproduces the published values of the Pantheon+SH0ES analysis ($\Omega_m \approx 0.33 \pm 0.018$, $H_0 \approx 73.5 \pm 1.0$). Both models are computed by one code on one dataset; the agreement of the control branch with the literature confirms the correctness of the setup.
+\end{quote}
+
+\subsection{Robustness: STAT-ONLY versus STAT+SYS}
+
+Control: the same anchored fit with the matrix of statistical errors only (no systematics). If the parameters and the shape barely shift, the result does not rest on the systematics.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & $\mu_0$ / $\Omega_m$ & $H_0$ & $\chi^2/\text{dof}$ \\
+\midrule
+DSIC, STAT+SYS & 0.7600 & 73.35 & 0.8783 \\
+$\Lambda$CDM, STAT+SYS & 0.3308 & 73.53 & 0.8783 \\
+DSIC, STAT-ONLY & 0.7661 & 73.04 & 0.9242 \\
+$\Lambda$CDM, STAT-ONLY & 0.3466 & 73.22 & 0.9244 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{equation*}
+\Delta\chi^2\;(\text{DSIC} - \Lambda\text{CDM}),\;\text{STAT-ONLY} = -0.39
+\end{equation*}
+$\mu_0$ shifts only from 0.7600 to 0.7661 (within $1\sigma$), the shape of the relation is preserved, and DSIC remains level with $\Lambda$CDM. The rise of $\chi^2/\text{dof}$ when the systematics are removed is an expected effect, identical for both models.
+
+% ============================================================
+\section{Joint SN + BAO fit}
+
+Pantheon+SH0ES supernovae (1657 SNe, anchored) and DESI DR2 BAO (6 bins, $0.5 < z < 2.33$) with the \textbf{full $12{\times}12$ covariance} of $D_M$--$D_H$ (the correlation between the transverse and radial scales within each bin is taken into account). The sound-horizon scale $r_d$ is a free parameter (it does not cancel via a ratio). Four free parameters for each model.
+\begin{align*}
+\text{DSIC}: &\quad \mu_0 = 0.7610,\;\; H_0 = 73.33,\;\; M = -19.243,\;\; r_d = 136.5\;\text{Mpc},\;\; \text{total} = 1461.0 \\
+\Lambda\text{CDM}: &\quad \Omega_m = 0.3029,\;\; H_0 = 73.75,\;\; M = -19.247,\;\; r_d = 137.1\;\text{Mpc},\;\; \text{total} = 1466.0
+\end{align*}
+\begin{align*}
+&\Delta\chi^2\;\text{total (DSIC} - \Lambda\text{CDM}) = -5.0 \\
+&\text{BAO } \chi^2/\text{dof (dof} = 12-4 = 8):\;\; \text{DSIC} = 1.04,\;\; \Lambda\text{CDM} = 1.36
+\end{align*}
+On the joint data, DSIC describes the expansion geometry \textbf{no worse than, and formally slightly better than,} $\Lambda$CDM ($\Delta\chi^2 = -5.0$; on the Jeffreys scale this is a weak, inconclusive preference, partly reflecting the known DESI--$\Lambda$CDM tension). The consistency on BAO ($\chi^2/\text{dof} \approx 1$) shows that the same $\mu_0$ geometry that describes the supernovae simultaneously reproduces the baryon scale.
+
+\begin{quote}
+\textbf{A remark on $r_d$.} In the joint fit, $r_d \approx 136\text{--}137$ Mpc lies below the standard ${\approx}147$ Mpc; this is a consequence of the high $H_0 \approx 73$ from the SH0ES anchor (the product $r_d H_0$ is fixed by the data). On the early scale $H_0 = 67.4$, the inverse problem from the same $D_M/r_d$, $D_H/r_d$ yields a scale constant in $z$: $r_d = 147.6$ Mpc from $D_M$ (scatter 1.7) and $r_d = 149.8$ Mpc from $D_H$ (scatter 1.8) --- consistent between the transverse and radial measurements and within ${\sim}1.5\%$ of the standard value. The value of $r_d$ shifts together with $H_0$ through the ``Hubble tension'' identically in both models.
+\end{quote}
+
+% ============================================================
+\section{The $Om(z)$ diagnostic --- an honest result}
+
+The diagnostic $Om(z) = (E^2 - 1)/((1+z)^3 - 1)$, $E = H/H_0$. For flat $\Lambda$CDM, $Om(z) = \Omega_m = \text{const}$ (a horizontal line); DSIC predicts a U-shaped $Om(z)$ with a minimum near $z \approx 2$. $Om(z)$ is built \textbf{from the data} (Moresco chronometer $H(z)$ + DESI $D_H/r_d$) and compared with both curves. The chronometers are plugged in with two covariance modes: DIAG (diagonal errors) and FULL (the full Moresco et al.\ 2020 covariance for the 15 correlated points; the remaining 18 points of the compilation are diagonal).
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$H_0$ & $\Delta\chi^2$ DIAG & $\Delta\chi^2$ FULL \\
+\midrule
+64 & $-25.0$ & $-24.2$ \\
+66 & $-15.6$ & $-15.2$ \\
+68 & $-4.6$ & $-4.7$ \\
+70 & $+8.3$ & $+7.6$ \\
+72 & $+23.1$ & $+21.6$ \\
+74 & $+39.9$ & $+37.7$ \\
+76 & $+58.9$ & $+55.8$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The sign of $\Delta\chi^2$ changes with the choice of $H_0$} in both modes (the flip occurs near $H_0 \approx 68.7$): at a low (Planck-like) normalization the data are formally closer to DSIC, at a high one (SH0ES) --- to $\Lambda$CDM. The result is entirely determined by the $H_0$ normalization, not by the shape of $Om(z)$; going from DIAG to FULL changes $\Delta\chi^2$ by only a few units and does not change the verdict.
+
+\begin{quote}
+\textbf{Conclusion.} With current data, the $Om(z)$ test \textbf{does not discriminate} between DSIC and $\Lambda$CDM. Claiming a DSIC victory on this probe is not permissible. The test will become decisive only with an independently pinned $H_0$ and more precise $H(z)$.
+\end{quote}
+
+\begin{quote}
+\textbf{A caveat on the covariance.} The full matrix is a careful reconstruction of the Moresco et al.\ (2020) method on the official input tables (hard-coded into the script), not a verbatim run of the authors' code. The diagonal matches the publication exactly; the off-diagonal structure reproduces the prescribed recipe of correlated systematic components. This does not affect the qualitative conclusion (the sign depends on $H_0$).
+\end{quote}
+
+% ============================================================
+\section{Falsifiable predictions of DSIC}
+
+Where data are still scarce, DSIC and $\Lambda$CDM diverge far enough for measurements to deliver a verdict. The parameters are from the joint fit ($\mu_0 = 0.7610$, $\Omega_m = 0.3029$). All signals in this section are a trace of the \textbf{core} (Part I) and are independent of the second-tier machinery: $D_H = c/H$ is determined by $\mu_0$ alone, and the $\mu_d$ correction is identically zero at $z \le 4.53$ (\S8.3).
+
+\subsection{The shape of $Om(z)$}
+
+The values are determined by the parameters of the joint fit:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$z$ & $Om_{\text{DSIC}}$ & $Om_{\Lambda\text{CDM}}$ \\
+\midrule
+0.2 & 0.3566 & 0.3029 \\
+0.5 & 0.3297 & 0.3029 \\
+1.0 & 0.3064 & 0.3029 \\
+2.0 & 0.3032 & 0.3029 \\
+3.0 & 0.3266 & 0.3029 \\
+5.0 & 0.4043 & 0.3029 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+DSIC yields a U-shaped $Om(z)$ (a minimum near $z \approx 2$, a rise toward high $z$) --- a qualitative signature that flat $\Lambda$CDM does not have. A flat $Om(z)$, measured precisely, would work against DSIC.
+
+\subsection{Radial BAO at high $z$ (Lyman-$\alpha$)}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$z$ & $D_H/r_d$ DSIC & $D_H/r_d$ $\Lambda$CDM & difference \\
+\midrule
+2.33 & 8.612 & 8.599 & $+0.1\%$ \\
+2.5 & 7.978 & 8.013 & $-0.4\%$ \\
+3.0 & 6.449 & 6.615 & $-2.5\%$ \\
+3.5 & 5.300 & 5.572 & $-4.9\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+By $z \approx 3.5$ the departure reaches ${\sim}5\%$. Precise Lyman-$\alpha$ BAO in this range (the window $2.33 < z < 4.53$ lies entirely below the detachment threshold) is a direct test of the core.
+
+\subsection{The expansion rate beyond the data}
+
+\begin{align*}
+z = 5\phantom{0}: &\quad E_{\text{DSIC}} / E_{\Lambda\text{CDM}} = 1.15 \quad (+15\%) \\
+z = 10: &\quad E_{\text{DSIC}} / E_{\Lambda\text{CDM}} = 1.47 \quad (+47\%)
+\end{align*}
+DSIC predicts a substantially stiffer early expansion history. The direct consequence for cosmic time is Section 7.
+
+% ============================================================
+\section{Cosmic time $t(z)$ --- the core's risk zone, stated as a number}
+
+In DSIC, the observer's proper time from the Mush to the epoch $\mu_e$ is: $t(z) H_0 = \ln(1/\mu_e(z))\cdot(2-\mu_0^2)/(1-\mu_0^2)$; at $z = 0$ it reproduces $t_0 H_0 \approx 0.925$ from block \texttt{[0b]}. The comparison is on the common scale $H_0 = 67.4$ ($\Omega_m = 0.3029$ from the joint fit, whence the $\Lambda$CDM $t_0$ here is 13.95 Gyr --- both models are put on an equal footing; the ${\lesssim}1\%$ radiation contribution is omitted, which does not skew the comparison in DSIC's favor):
+\begin{equation*}
+\text{Age today:}\quad t_{0,\text{DSIC}} = 13.38\;\text{Gyr},\quad t_{0,\Lambda\text{CDM}} = 13.95\;\text{Gyr}
+\end{equation*}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$z$ & $t_{\text{DSIC}}$, Gyr & $t_{\Lambda\text{CDM}}$, Gyr & ratio \\
+\midrule
+3.0 & 1.727 & 2.184 & 0.79 \\
+5.0 & 0.812 & 1.194 & 0.68 \\
+6.0 & 0.604 & 0.948 & 0.64 \\
+7.0 & 0.467 & 0.776 & 0.60 \\
+7.5 & 0.415 & 0.709 & 0.59 \\
+8.0 & 0.371 & 0.651 & 0.57 \\
+10.0 & 0.250 & 0.482 & 0.52 \\
+12.0 & 0.180 & 0.375 & 0.48 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Context: quasars with $M_{\text{BH}} \sim 10^9\,M_\odot$ are observed out to $z \approx 7.5$; JWST galaxies are confirmed out to $z \approx 10\text{--}14$; reionization completes by $z \approx 6$.
+
+\medskip
+\noindent\textbf{A Salpeter estimate.} At the Eddington limit, one e-folding of a black hole's mass takes ${\sim}45$ Myr; growth from a stellar seed of ${\sim}10^2\,M_\odot$ to ${\sim}10^9\,M_\odot$ requires ${\sim}16$ e-foldings $\approx 0.72$ Gyr. $\Lambda$CDM has 0.71 Gyr at its disposal by $z \approx 7.5$ --- just barely enough (which already motivates heavy seeds); DSIC has 0.42 Gyr $\approx 9$ e-foldings --- either direct-collapse seeds of ${\sim}10^5\,M_\odot$ with continuous accretion, or super-Eddington regimes, become mandatory. This is not a refutation (super-Eddington accretion is discussed in earnest, not least because of the ``overmassive'' JWST black holes), but it is \textbf{the narrowest point of the core} --- the optical correction of Part II does not soften it, since it does not change $H(z)$.
+
+\medskip
+\noindent\textbf{A caveat on the age today.} The oft-quoted $13.80 \pm 0.02$ Gyr is an age derived within $\Lambda$CDM from the Planck data; measuring a non-$\Lambda$CDM model against it is partly circular. The value $t_0 = 13.38$ Gyr passes the model-independent stellar ages (the oldest globular clusters, ${\sim}13.5 \pm 0.5$ Gyr).
+
+% ============================================================
+\section{Part II: the distance to the CMB (the detachment threshold $\mu_d$)}
+
+\begin{quote}
+\textbf{Status.} $\mu_d$ is a constant of the second tier: the form of the correction is fixed by postulate P6 (amplitude $A \equiv 1$, a sharp threshold), and its value is calibrated against \textbf{one} observation. The verification below \textbf{does not prove} $\mu_d$; it confirms that the arithmetic is reproducible, the Planck reference figure is correct, and the late Universe is untouched, and it honestly exhibits the degeneracy that is fixed precisely by the postulate, not by the data.
+\end{quote}
+
+\subsection{Planck reference data (self-check)}
+
+\begin{align*}
+&z^* = 1089.92,\;\; r^* = 144.43\;\text{Mpc},\;\; 100\theta^* = 1.04110 \\
+&d_{\text{LSS}}\;(\text{hard-coded}) = 13872.8 \pm 25.0\;\text{Mpc} \\
+&d_{\text{LSS}} = r^*/\theta^* = 13872.8\;\text{Mpc} \quad (\text{discrepancy } 0.00\%)
+\end{align*}
+The directly measured quantity is the angle $\theta^*$. The sound horizon $r^* = 144.43$ Mpc is a quantity \textbf{computed within $\Lambda$CDM} from the physics of the photon--baryon plasma, which DSIC does not have; it is used as an external input, and this is flagged explicitly. The origin of the acoustic scale ${\sim}147$ Mpc is an open question of the core.
+
+\subsection{The core's shortfall and the calibration of the threshold via $\theta^*$}
+
+The core parameters on the early scale are the same as for BAO, the chronometers, and the age: $\mu_0 = 0.76$, $H_0 = 67.4$, $c/k = 14978.2$ Mpc.
+\begin{align*}
+&\mu_{\text{cmb}}(z^* = 1089.92) = 0.9999994681 \\
+&D_M \text{ base to the CMB} = 10936.2\;\text{Mpc} \\
+&\text{shortfall} = 2936.6\;\text{Mpc} \;\;(21.2\%) \\[4pt]
+&\text{calibration:}\;\; \theta_{\text{model}}(\mu_d) = \theta^* \;\Leftrightarrow\; D_M^{\text{corr}}(\mu_{\text{cmb}}) = r^*/\theta^* = 13872.8\;\text{Mpc} \\
+&\mu_d = 0.980640 \\
+&z_{\text{detach}} = 4.526 \\
+&100{\cdot}\theta_{\text{model}} = 1.04110 \quad (\text{Planck: } 1.04110) \text{ --- exact closure}
+\end{align*}
+
+\subsection{The late Universe is untouched; the degeneracy without P6}
+
+The correction is identically zero below the threshold:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$z$ & $D_M$ base, Mpc & correction, Mpc \\
+\midrule
+0.50 & 1932.8 & $+0.0$ \\
+1.00 & 3384.2 & $+0.0$ \\
+2.33 & 5792.7 & $+0.0$ \\
+4.00 & 7335.6 & $+0.0$ \\
+4.53 & 7653.3 & $+0.0$ \\
+4.63 & 7707.7 & $+49.3$ \; $\leftarrow$ switched on \\
+5.00 & 7896.9 & $+220.4$ \; $\leftarrow$ switched on \\
+10.00 & 9247.2 & $+1433.1$ \; $\leftarrow$ switched on \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All 6 DESI bins ($z \le 2.33$) are insensitive to the correction --- the results of Part I (Sections 3--6) are fully preserved.
+
+Without postulate P6 the calibration is degenerate --- the equation $A\cdot(c/k)\cdot[\arcsin\mu_{\text{cmb}} - \arcsin\mu_d] = \text{shortfall}$ has a curve of solutions:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$A$ & $\mu_d$ & $z_{\text{detach}}$ \\
+\midrule
+0.5 & 0.923705 & 1.506 \\
+0.8 & 0.969868 & 3.344 \\
+\textbf{1.0} & \textbf{0.980640} & \textbf{4.526} \; $\leftarrow$ fixed by P6 \\
+1.2 & 0.986514 & 5.690 \\
+2.0 & 0.995097 & 10.266 \\
+5.0 & 0.999190 & 26.922 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+One observation fixes one parameter: \textbf{zero degrees of freedom}. With the form fixed by P6, $\mu_d$ is a measured constant of the second tier (the same status as $\mu_0$ in the core); $z_{\text{detach}}$ is not a prediction.
+
+\subsection{The threshold's trace, the horizon, and the reach of the probes}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$z$ & object & correction to $D_M$ \\
+\midrule
+4.53 & detachment threshold & $+0.0\%$ \\
+5.00 & JWST galaxies & $+2.8\%$ \\
+6.00 & quasars & $+7.1\%$ \\
+8.00 & reionization & $+12.4\%$ \\
+11.00 & first galaxies & $+16.6\%$ \\
+1089.92 & CMB (calibration) & $+26.9\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The particle horizon: base $10953.6$ Mpc; with the correction $13905.7$ Mpc --- $32.9$ Mpc beyond the last-scattering surface: in the corrected geometry the CMB lies almost flush against the horizon.
+
+The reach of the probes: DESI DR2 ($z \le 2.33$), DESI DR3 (${\sim}2027$, $z \le 3.55$), DESI-II/LBG (${\sim}2029$, $2.5 < z < 3.5$) --- all below the threshold. The radial BAO in the window $2.33\text{--}4.53$ is a trace of the core, not of $\mu_d$; the threshold itself affects only $D_M$ above $z \approx 4.5$, where no precise rulers exist apart from the CMB calibration itself. A second independent anchor for $\mu_d$ is out of reach until a precise distance scale appears at $z \gtrsim 5\text{--}6$.
+
+\subsection{Consistency flag of the P6 formulation}
+
+The observed galaxies (JWST, $z \approx 10\text{--}14$; $\mu_e(z{=}14) = 0.9972$) lie \textbf{above} the detachment threshold ($\mu_d = 0.9806$, $z_{\text{detach}} = 4.53$) --- they exist before detachment. A literal reading --- ``no separate objects exist at $\mu > \mu_d$'' --- would contradict the observations; the P6 formulation adopted in the paper refers the threshold to the \textbf{average medium along the light path}: local clumps with maximal binding fall into themselves and collapse into objects before the threshold, without changing the average availability of space. The script prints this flag explicitly; the distance arithmetic and the results of Part I do not depend on it.
+
+% ============================================================
+\section{Part III: structure growth ($f\sigma_8$)}
+
+The DSIC core sets only the \textbf{background} --- the expansion rate $H(z)$. A separate question is whether this background is compatible with the observed \textbf{growth of inhomogeneities} (galaxies, clusters). Block \texttt{[11]} takes a minimal, honestly bounded step: on the DSIC background, the \textbf{standard} equation of linear growth of matter perturbations in the sub-horizon GR limit is solved,
+\begin{equation}
+\frac{d^2\delta}{d(\ln a)^2} + \left[2 + \frac{d\ln H}{d\ln a}\right]\frac{d\delta}{d(\ln a)} - \frac{3}{2}\,\Omega_m(a)\,\delta = 0,
+\end{equation}
+and the observable combination $f\sigma_8(z) = f\cdot\sigma_8\cdot\delta(z)/\delta(0)$, $f = d\ln\delta/d\ln a$, is computed. The comparison is against the \textbf{Gold-2017} compilation (Nesseris, Pantazis \& Perivolaropoulos 2017; 18 weakly correlated points, the covariance of the three WiggleZ points included).
+
+\begin{quote}
+\textbf{Status --- a survival test, not a derivation from the core.} DSIC does not derive the growth equation from first principles: the core introduces no densities, so $\Omega_{m0}$ enters here as a growth parameter, and the equation itself is taken in the GR limit on the DSIC geometry. The result removes the objection of gross incompatibility but is not a prediction from the core.
+\end{quote}
+
+\subsection{The result and the $(\Omega_{m0}, \sigma_8)$ degeneracy}
+
+The $f\sigma_8$ data constrain not $\Omega_{m0}$ and $\sigma_8$ separately but their combination $S_8 = \sigma_8\cdot\sqrt{\Omega_{m0}/0.3}$. A scan along the degeneracy valley ($\mu_0 = 0.76$ fixed from the background):
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Omega_{m0}$ & $\sigma_8^*$ & $\chi^2/\text{dof}$ & $S_8 = \sigma_8\sqrt{\Omega_{m0}/0.3}$ \\
+\midrule
+0.15 & 1.040 & 0.72 & 0.735 \\
+0.20 & 0.925 & 0.70 & 0.755 \\
+0.25 & 0.835 & 0.73 & 0.762 \\
+0.30 & 0.770 & 0.78 & 0.770 \\
+0.35 & 0.715 & 0.84 & 0.772 \\
+0.40 & 0.670 & 0.91 & 0.774 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{align*}
+&\text{Formal minimum:}\;\; \Omega_{m0} = 0.185,\;\; \sigma_8 = 0.955,\;\; \chi^2/\text{dof} = 0.70 \;\;(18\;\text{points}) \\
+&\text{Invariant along the valley:}\;\; S_8 = 0.761 \pm 0.013 \\
+&\text{Slice at Planck-like } \Omega_{m0} = 0.30:\;\; \sigma_8 = 0.770,\;\; \chi^2/\text{dof} = 0.73,\;\; S_8 = 0.770
+\end{align*}
+Along the entire valley, $\chi^2/\text{dof} \approx 0.7\text{--}0.9$ --- the DSIC background describes structure growth no worse than $\Lambda$CDM. The invariant $S_8 = 0.761 \pm 0.013$ is stable and agrees with independent estimates (Planck $S_8 \approx 0.83$, weak lensing $S_8 \approx 0.76$); the DSIC background lands in the observed range without any stretching.
+
+\subsection{The $f\sigma_8(z)$ curve (the slice $\Omega_{m0} = 0.30$)}
+
+The DSIC $f\sigma_8(z)$ curve is shallow, peaking around $z \approx 0.4\text{--}0.6$, and passes through the data cloud:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$z$ & $f\sigma_8$ model & $f\sigma_8$ obs.\ $\pm$ error \\
+\midrule
+0.02 & 0.399 & $0.428 \pm 0.046$ \\
+0.15 & 0.421 & $0.490 \pm 0.145$ \\
+0.38 & 0.440 & $0.440 \pm 0.060$ \\
+0.59 & 0.440 & $0.488 \pm 0.060$ \\
+0.73 & 0.434 & $0.437 \pm 0.072$ \\
+0.86 & 0.425 & $0.400 \pm 0.110$ \\
+1.40 & 0.375 & $0.482 \pm 0.116$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textit{(the table is thinned; the full output for all 18 points is in the log of block \texttt{[11]}).}
+
+\begin{quote}
+\textbf{Simplifications (stated honestly).} (1) The Alcock--Paczynski correction for the difference between the DSIC background distances and the fiducial cosmology of each RSD measurement was not applied; at $z < 1$ the AP factor is typically $< 2\text{--}3\%$, small against the errors. (2) The growth equation is the GR-limit one; deriving growth from binding (\S12 of the paper) remains a direction for development. Both simplifications are flagged as sources of systematics and do not affect the qualitative conclusion (compatibility).
+\end{quote}
+
+% ============================================================
+\section{Bottom line}
+
+\noindent\textbf{What has been checked and holds:}
+\begin{itemize}
+  \item the internal identities of the core hold to machine precision ($\le 5.7{\cdot}10^{-8}$);
+  \item supernovae (anchored fit): $\Delta\chi^2 = +0.05$ --- indistinguishable from $\Lambda$CDM; the parameter is measured: $\mu_0 = 0.7600 \pm 0.0091$;
+  \item pipeline validation: the $\Lambda$CDM branch reproduces the published Pantheon+SH0ES values;
+  \item robustness to the treatment of errors (STAT-ONLY): $\Delta\chi^2 = -0.39$, the shift of $\mu_0$ within $1\sigma$;
+  \item SN + BAO joint: $\Delta\chi^2 = -5.0$ (a weak formal preference for DSIC); BAO $\chi^2/\text{dof} = 1.04$ versus 1.36;
+  \item the ruler $r_d \approx 148$ Mpc on the early scale, constant in $z$;
+  \item the second tier: the closure to $\theta^*$ is exact, the late Universe is identically untouched, the horizon is finite and lies $33$ Mpc beyond the CMB;
+  \item structure growth: the DSIC background describes $f\sigma_8$ (Gold-2017) no worse than $\Lambda$CDM ($\chi^2/\text{dof} \approx 0.7$), the invariant $S_8 = 0.761 \pm 0.013$ is within the observed range.
+\end{itemize}
+
+\noindent\textbf{What is not confirmed and is stated honestly:}
+\begin{itemize}
+  \item the $Om(z)$ test with current data does not discriminate between the models --- the sign of $\Delta\chi^2$ depends on $H_0$ (in both covariance modes);
+  \item $\mu_d$ is a calibration against a single observation (0 degrees of freedom) with the form fixed by the postulate; $r^*$ is borrowed from $\Lambda$CDM;
+  \item the P6 formulation requires the ``average medium'' reading (the flag of \S8.5);
+  \item structure growth is a survival test, not a derivation from the core: the growth equation is taken in the GR limit, and $\Omega_{m0}$ enters as a growth parameter (\S9).
+\end{itemize}
+
+\noindent\textbf{Where the model will meet its decisive tests:}
+\begin{itemize}
+  \item the shape of $Om(z)$; Lyman-$\alpha$ BAO at $z \approx 3\text{--}3.5$ (up to ${\sim}5\%$, within reach of DESI DR3);
+  \item \textbf{cosmic time at $z = 5\text{--}12$}: at $z = 7.5$, 0.42 Gyr are available versus 0.71 in $\Lambda$CDM --- the Salpeter budget of black hole growth shrinks from ${\sim}16$ to ${\sim}9$ e-foldings; this is the core's narrowest point, stated as a number.
+\end{itemize}
+
+DSIC is a viable one-parameter geometric alternative on late-time data, with sharp falsifiable predictions on early ones. Current data neither reject it nor confirm it more strongly than $\Lambda$CDM; the decisive factors will be high $z$, an independently pinned $H_0$, and the cosmic time budget.
+
+% ============================================================
+\section{Reproducibility}
+
+All results are produced by a \textbf{single script}, \texttt{en\_dsic\_test.py}; it runs as a single cell in Colab or via \texttt{python en\_dsic\_test.py}. The script downloads the public catalogs itself and computes $\chi^2$ with the full covariance; the provenance of every hard-coded figure is documented in the file itself.
+
+\begin{quote}
+\textbf{On run time.} A full run takes roughly 10--15 minutes: downloading the supernova catalog (${\sim}65$ MB), the Pantheon+SH0ES fits (a few minutes), and block \texttt{[11]} (structure growth) --- the longest stage (a grid scan with numerical ODE integration at every node, ${\sim}5$ minutes). Between the printout of block \texttt{[10]} and the results of \texttt{[11]} there may be a long silent pause --- this is expected; the script is computing, no need to interrupt it.
+\end{quote}
+
+Data: \textbf{Pantheon+SH0ES} (\texttt{Pantheon+SH0ES.dat}, \texttt{STAT+SYS.cov}, \texttt{STATONLY.cov}) from the \texttt{PantheonPlusSH0ES/DataRelease} repository (auto-download); \textbf{DESI DR2} BAO (Table IV, 6 bins, hard-coded, self-check \texttt{[0]}); cosmic chronometers --- a compilation of 33 points with the full Moresco et al.\ (2020) covariance for the 15 Moresco points; \textbf{Planck 2018} ($z^*$, $r^*$, $\theta^*$, $d_{\text{LSS}}$, self-check \texttt{[7]}); \textbf{Gold-2017} $f\sigma_8$ (18 points, Nesseris et al.\ 2017; from Table I of Sagredo et al.\ 2018; the WiggleZ covariance --- Blake et al.\ 2012), hard-coded into block \texttt{[11]}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}clc@{}}
+\toprule
+\textbf{Block} & \textbf{What it does} & \textbf{Section} \\
+\midrule
+\texttt{[0]} & Self-check of the hard-coded DESI against Table IV & \S11 \\
+\texttt{[0b]} & Machine verification of the core's internal identities & \S2 \\
+\texttt{[1]} & Anchored SN fit (STAT+SYS), explicit $M$, $1\sigma$ from the Hessian & \S3.1 \\
+\texttt{[2]} & STAT-ONLY control & \S3.2 \\
+\texttt{[3]} & Joint SN+BAO, free $r_d$, the $r_d$ ruler & \S4 \\
+\texttt{[4]} & $Om(z)$: robustness to $H_0$, DIAG + FULL covariances & \S5 \\
+\texttt{[5]} & Falsifiable predictions at high $z$ & \S6 \\
+\texttt{[6]} & Cosmic time $t(z)$, DSIC vs $\Lambda$CDM & \S7 \\
+\texttt{[7]} & Self-check of the Planck reference data & \S8.1 \\
+\texttt{[8]} & The core's shortfall, fixing $\mu_d$ via $\theta^*$ & \S8.2 \\
+\texttt{[9]} & Zero-below-threshold control; the $A \leftrightarrow \mu_d$ degeneracy & \S8.3 \\
+\texttt{[10]} & The trace of $\mu_d$, the horizon, reach, the P6 flag & \S8.4--8.5 \\
+\texttt{[11]} & Structure growth $f\sigma_8$ on the DSIC background (GR limit), the $S_8$ invariant & \S9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dependencies: \texttt{numpy}, \texttt{scipy} (pre-installed in Colab).
+
+\end{document}
