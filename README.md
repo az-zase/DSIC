@@ -32,7 +32,7 @@ article/
 ```
 ---
 
-## article/DSIC - Azamat Zaseev.md
+## article/DSIC - Azamat Zaseev.md & tex
 
 The main DSIC paper is a single self-contained document.
 
