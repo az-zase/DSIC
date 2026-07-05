@@ -10,35 +10,53 @@ Rather than introducing dark energy, DSIC interprets the observed late-time acce
 
 The core implementation reproduces the expansion history of the mid-to-late Universe using one free cosmological parameter. It matches ΛCDM on the full Pantheon+SH0ES supernova sample (Δχ² ≈ +0.05), while also providing consistent fits to BAO, cosmic chronometers, the transition redshift, and the age of the Universe. On the joint SN+BAO fit DSIC is marginally preferred (Δχ² ≈ −5.0, a weak formal preference).
 
-The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background). Both are kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the 
+The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background). Both are kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the repository.
 
 ## Repository structure
 
 ```
 README.md
 article/
-  DSIC - Azamat Zaseev.md
-  Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
-  dsic_formulas.mmd
-  dsic_test.py
-  dsic_results.md
-  dsic_graph.png
+  RU/
+    Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md
+    dsic_results.md
+    dsic_graph.png
+    dsic_test.py
+    dsic_formulas.mmd
+    TEX/
+      Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
+      dsic_results.tex
   EN/
-    en DSIC - Azamat Zaseev.md
-    en dsic_formulas.mmd
-    en_dsic_test.py
+    en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md
     en dsic_results.md
     en dsic_graph.png
+    en_dsic_test.py
+    en dsic_formulas.mmd
+    TEX/
+      en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
+      en dsic_results.tex
 ```
+
+The `RU/` and `EN/` directories are complete one-to-one language mirrors with an identical file structure. The only difference is that in `EN/` every file carries the prefix `en ` (and the Python script uses `en_`).
+
 ---
 
-## article/DSIC - Azamat Zaseev.md & tex
+## article/RU/ & article/EN/
 
-The main DSIC paper is a single self-contained document. 
+Each language directory contains the same set of files:
 
- Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
+- **Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md** — the main paper (Markdown)
+- **dsic_results.md** — summary of numerical results
+- **dsic_graph.png** — nine-panel visualization of cosmological fits and comparisons
+- **dsic_test.py** — empirical validation and reproducibility pipeline
+- **dsic_formulas.mmd** — Mermaid source of the DSIC formula diagram
+- **TEX/** — LaTeX sources for the paper and results
 
-It is organized in three parts:
+---
+
+## Main paper — Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev
+
+The main DSIC paper is a single self-contained document, organized in three parts:
 
 Part I — core model (late Universe, z < 2.3):
 - dual-scale geometry (S ↔ O)
@@ -61,32 +79,17 @@ Applicability of each part is explicitly separated: the core is self-contained; 
 
 ---
 
-## article/EN/
-
-Complete English-language mirror of the repository.
-
-This directory contains English versions of:
-- main paper
-- formula diagram (Mermaid)
-- reproducibility script
-- results summary
-- figures
-
-All files correspond one-to-one with the original version.
-
----
-
-## article/dsic_formulas.mmd
+## dsic_formulas.mmd
 
 Mermaid source of the DSIC formula diagram.
 
 The diagram describes the structure of the model from the action principle through observable cosmological relations and marks the boundary of applicability.
 
-The rendered output is stored as article/dsic_graph.png.
+The rendered output is stored as `dsic_graph.png`.
 
 ---
 
-## article/dsic_test.py
+## dsic_test.py
 
 Empirical validation and reproducibility pipeline.
 
@@ -110,7 +113,7 @@ Runtime: 3–5 minutes.
 
 ---
 
-## article/dsic_results.md
+## dsic_results.md
 
 Summary of numerical results:
 - Supernova fit: Δχ² ≈ +0.05
@@ -123,9 +126,17 @@ Summary of numerical results:
 
 ---
 
-## article/dsic_graph.png
+## dsic_graph.png
 
 Nine-panel visualization of cosmological fits and comparisons.
+
+---
+
+## TEX/
+
+LaTeX sources, mirroring the paper and the results summary:
+- **Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex** — LaTeX source of the main paper
+- **dsic_results.tex** — LaTeX source of the numerical results summary
 
 ---
 
