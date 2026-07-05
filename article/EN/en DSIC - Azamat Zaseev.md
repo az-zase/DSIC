@@ -3,7 +3,7 @@
 **Azamat Zaseev**
 Independent Researcher, Russia
 ORCID: 0009-0004-9345-1069
-Code and data: https://github.com/az-zase/DSIC
+https://github.com/az-zase/DSIC
 
 ---
 
