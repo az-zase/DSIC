@@ -37,8 +37,6 @@ article/
       en dsic_results.tex
 ```
 
-The `RU/` and `EN/` directories are complete one-to-one language mirrors with an identical file structure. The only difference is that in `EN/` every file carries the prefix `en ` (and the Python script uses `en_`).
-
 ---
 
 ## article/RU/ & article/EN/
@@ -109,7 +107,7 @@ Includes:
 - high-redshift extrapolation tests
 - structure growth evolution
 
-Runtime: 3–5 minutes.
+Runtime: 10–15 minutes.
 
 ---
 
