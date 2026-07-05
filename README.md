@@ -36,7 +36,7 @@ article/
 
 The main DSIC paper is a single self-contained document. 
 
-{ Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex }
+ Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
 
 It is organized in three parts:
 
