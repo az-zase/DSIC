@@ -171,7 +171,7 @@ Azamat Zaseev
 Dual Scale Inversion Cosmology (DSIC)  
 https://github.com/az-zase/DSIC.git
 
-[![DOI](https://zenodo.org/badge/1281640542.svg)](https://doi.org/10.5281/zenodo.21198493)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198494.svg)](https://doi.org/10.5281/zenodo.21198494)
 
 ---
 
