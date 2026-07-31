@@ -1,0 +1,335 @@
+<head><meta charset="UTF-8"></head><div style="caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-style: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-tap-highlight-color: rgba(26, 26, 26, 0.3); -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; text-decoration-line: none; text-decoration-thickness: auto; text-decoration-style: solid;"><div class="stream output-id-17 output_text"><pre>======================================================================
+[0] Self-check: the hard-coded DESI against the official Table IV
+======================================================================
+  OK — all 6 DESI bins match arXiv:2503.14738, Table IV.
+
+======================================================================
+[0b] Core consistency: machine verification of the internal identities
+======================================================================
+  (a) b(μ) strictly decreasing on (μ₀,1): OK
+  (b) identity D_H = dχ/dz: max deviation 5.7e-08 OK
+  (c) closed-form χ = ∫c dz/H: max deviation 4.4e-12 OK
+  (d) q(μ_cross)=0 at μ_cross=√(3−√5)=0.874032; z_t=0.769: OK
+  (e) age: t₀·H₀ = 0.9241  -&gt;  t₀ = 13.41 Gyr at H₀=67.4 (ΛCDM-derived 13.80 ± 0.02; model-independent stellar anchor 13.5 ± 0.5)
+  Bottom line: the core's internal identities hold exactly.
+
+======================================================================
+[0c] Spinor (Möbius) core  ψ = R·e^{iφ/2}:  identities + forcedness
+======================================================================
+  [  OK]  Re ψ = O = R cos(φ/2)                    dev = 1.11e-16
+  [  OK]  Im ψ = S = R sin(φ/2)                    dev = 1.11e-16
+  [  OK]  |ψ|² = R² (norm)                         dev = 2.22e-16
+  [  OK]  W = S O' − O S' = −R²/2                  dev = 3.30e-10
+  [  OK]  O_full = R cos(φ/2)·sign sin(φ/2)        dev = 1.11e-16
+  [  OK]  μ period 2π                              dev = 1.03e-15
+  [  OK]  ψ(φ+2π) = −ψ(φ) (spinor minus)           dev = 1.11e-15
+  [  OK]  ψ(φ+4π) = +ψ(φ) (two-sheet return)       dev = 2.16e-15
+  covering ratio (sign cycle / observable cycle) for α ∈ [1.0, 0.5, 0.333, 2.0, 0.25, 0.75]:
+        [2.0, 2.0, 2.0, 2.0, 2.0, 2.0]  → all = 2
+  ⇒ two-sheeted (Möbius/spinor) covering is FORCED by P2+P4 for any α;
+    the exponent 1/2 is a normalization of the unobservable flow φ.
+  ITOG: core is spinor-consistent (machine zero)
+
+======================================================================
+[1a] Loading Pantheon+SH0ES
+======================================================================
+  downloading Pantheon+SH0ES.dat ...
+  done: 0.6 MB
+  downloading Pantheon+SH0ES_STAT+SYS.cov ...
+  done: 33.3 MB
+  downloading Pantheon+SH0ES_STATONLY.cov ...
+  done: 31.8 MB
+  read 1701 supernovae
+  1657 SNe enter the fit (calibrators: 77)
+
+======================================================================
+[1] SN anchored fit (Pantheon+SH0ES, STAT+SYS, m_b_corr + explicit M)
+======================================================================
+DSIC : mu0=0.7600  H0=73.35  M=-19.2433  chi2/dof=0.8783
+ΛCDM : Om =0.3308  H0=73.53  M=-19.2442  chi2/dof=0.8783
+Δχ² (DSIC−ΛCDM) = +0.05   (|Δ|&lt;2 — indistinguishable)
+
+  1σ uncertainties (χ² Hessian at the minimum, C = 2H⁻¹):
+  DSIC : mu0 = 0.7600 ± 0.0091   H0 = 73.35 ± 1.01   M = -19.2433 ± 0.0295
+  ΛCDM : Om  = 0.3308 ± 0.0180   H0 = 73.53 ± 1.02   M = -19.2442 ± 0.0295
+
+======================================================================
+[2] Robustness to the error treatment: STAT-ONLY
+======================================================================
+DSIC STAT-ONLY: mu0=0.7661  H0=73.04  chi2/dof=0.9242
+ΛCDM STAT-ONLY: Om =0.3466  H0=73.22  chi2/dof=0.9244
+Δχ² STAT-ONLY = -0.39
+  mu0: 0.7600 (STAT+SYS) → 0.7661 (STAT-ONLY)
+
+======================================================================
+[3] Joint SN+BAO (full 12×12 covariance, free r_d)
+======================================================================
+DSIC : mu0=0.7610 H0=73.33 M=-19.243 r_d=136.5  total=1461.0
+ΛCDM : Om =0.3029 H0=73.75 M=-19.247 r_d=137.1  total=1466.0
+Δχ² total (DSIC−ΛCDM) = -5.00  (weak; partly reflects the DESI–ΛCDM tension)
+BAO χ²/dof (12−4=8): DSIC=1.04  ΛCDM=1.36
+
+  The r_d ruler (inverse problem) on the early scale H0=67.4:
+    r_d from D_M = 147.6 Mpc  (scatter 1.7)
+    r_d from D_H = 149.8 Mpc  (scatter 1.8)
+
+======================================================================
+[4] Om(z): robustness of the sign of Δχ² to the H0 normalization (an honest test)
+======================================================================
+  The chronometers are plugged in with TWO covariance modes:
+    DIAG = diagonal errors (the baseline version of the test);
+    FULL = the full Moresco 2020 covariance (15 points correlated).
+    H0 |   Δχ² DIAG |   Δχ² FULL
+  --------------------------------
+    64 |      -25.0 |      -24.2
+    66 |      -15.6 |      -15.2
+    68 |       -4.6 |       -4.7
+    70 |       +8.3 |       +7.6
+    72 |      +23.1 |      +21.6
+    74 |      +39.9 |      +37.7
+    76 |      +58.9 |      +55.8
+
+  Verdict DIAG: THE SIGN FLIPS → the test does NOT discriminate (range -25.0…+58.9)
+  Verdict FULL: THE SIGN FLIPS → the test does NOT discriminate (range -24.2…+55.8)
+  [!] Bottom line: in both covariance modes the sign of Δχ² is set by the
+      choice of the H₀ normalization, not by the shape of Om(z): at a low
+      (Planck-like) H₀ the data are formally closer to DSIC, at a high one
+      (SH0ES) — to ΛCDM. Going from DIAG to FULL changes Δχ² by mere units
+      and does not change the verdict. The probe does NOT discriminate; it
+      becomes decisive only with an independently pinned H₀ and more precise H(z).
+
+======================================================================
+[5] Falsifiable predictions, DSIC vs ΛCDM at high z
+======================================================================
+  D_H/r_d (Lyman-α region) — a trace of the CORE, independent of Part II:
+    z=2.33:  DSIC=8.612  ΛCDM=8.599  diff=+0.1%
+    z=2.5:  DSIC=7.978  ΛCDM=8.013  diff=-0.4%
+    z=3.0:  DSIC=6.449  ΛCDM=6.615  diff=-2.5%
+    z=3.5:  DSIC=5.300  ΛCDM=5.572  diff=-4.9%
+  E(z) beyond the data:
+    z=5:  E_DSIC/E_ΛCDM = 1.15  (+15%)
+    z=10:  E_DSIC/E_ΛCDM = 1.47  (+47%)
+
+======================================================================
+[7] Self-check of the Planck 2018 reference data (hard-coded)
+======================================================================
+  z* = 1089.92,  r* = 144.43 Mpc,  100θ* = 1.04110
+  d_LSS (hard-coded) = 13872.8 ± 25.0 Mpc
+  d_LSS = r*/θ*      = 13872.8 Mpc  (discrepancy 0.00%)
+  OK — the reference figure is consistent with r* and θ* (Planck 2018).
+  Source: Planck 2018 (arXiv:1807.06209), column
+  base_plikHM_TTTEEE_lowl_lowE_lensing (Planck Legacy Archive tables).
+
+======================================================================
+[8] Second tier (P6): the core's shortfall and fixing μ_d via the angle θ*
+======================================================================
+  Core parameters (early scale): μ₀ = 0.76, H₀ = 67.4
+  c/k                = 14978.2 Mpc
+  μ_cmb(z*=1089.92) = 0.9999994681
+  D_M base to CMB    = 10936.2 Mpc
+  Target: θ_model(μ_d) = θ*  ⇔  D_M_corr(μ_cmb) = r*/θ* = 13872.8 Mpc
+  core shortfall     = 2936.6 Mpc  (21.2 %)
+  [!] r* = 144.43 Mpc is a quantity COMPUTED within ΛCDM (an external
+      input; the direct measurement is the angle θ*). The origin of the
+      acoustic scale ~147 Mpc is an open question of the core (the paper, §10.7).
+
+  μ_d        = 0.980640
+  z_detach   = 4.5258
+  D_M corr   = 13872.8 Mpc;  100·θ_model = 1.04110  (Planck 100θ* = 1.04110)
+  closure to θ*: OK
+
+======================================================================
+[6] Cosmic time t(z): DSIC vs ΛCDM (common scale H0=67.4)
+======================================================================
+  Detachment threshold (from block [8], via θ*): μ_d = 0.98064, z_det = 4.526
+  Normal-clock scale C = 0.6742 (matched to the relative rate at μ_d)
+  Age today: t0_REL = 13.38 Gyr,  t0_PIECEWISE = 14.35 Gyr,  t0_ΛCDM = 13.95 Gyr  (ΛCDM-derived 13.80; stellar anchor 13.5 ± 0.5)
+  Continuity at z_det: t(4.525)=1.9198 Gyr, t(4.527)=1.9192 Gyr  (Δ=6.52e-04)
+
+      z |     t_REL |  t_PIECEWISE |    t_ΛCDM |  PW/ΛCDM |             zone
+  ----------------------------------------------------------------------------
+    3.0 |     1.727 |        2.697 |     2.184 |     1.24 | below (untouched)
+    4.0 |     1.146 |        2.116 |     1.567 |     1.35 | below (untouched)
+    5.0 |     0.812 |        1.776 |     1.194 |     1.49 |   above (normal)
+    6.0 |     0.604 |        1.533 |     0.948 |     1.62 |   above (normal)
+    7.0 |     0.467 |        1.348 |     0.776 |     1.74 |   above (normal)
+    7.5 |     0.415 |        1.271 |     0.709 |     1.79 |   above (normal)
+    8.0 |     0.371 |        1.202 |     0.651 |     1.85 |   above (normal)
+   10.0 |     0.250 |        0.988 |     0.482 |     2.05 |   above (normal)
+   12.0 |     0.180 |        0.838 |     0.375 |     2.23 |   above (normal)
+
+  Salpeter check (SMBH ~1e9 M☉ by z≈7.5 needs ~0.72 Gyr, ~16 e-folds):
+    t_REL(7.5)       = 0.41 Gyr  (reference: relative clock everywhere)
+    t_PIECEWISE(7.5) = 1.27 Gyr  (piecewise, adopted)
+    t_ΛCDM(7.5)      = 0.71 Gyr
+
+  Context (what must have time to happen within this budget):
+   - quasars with M_BH ~ 10⁹ M☉ are observed by z ≈ 7.5;
+   - JWST galaxies are confirmed out to z ≈ 10–14;
+   - reionization completes by z ≈ 6.
+  In the PIECEWISE model the relative-time compression switches off above
+  the detachment threshold (the same μ_d as in Part II); H(z) below the
+  threshold — and thus every SN/BAO/Lyα prediction at z ≤ z_det — is
+  unchanged. Only the time budget above the threshold is affected.
+
+======================================================================
+[6b] ISLAND-TIME TEST on real high-z SMBHs (falsifiable)
+======================================================================
+  Principle: each object switches to relative time at ITS OWN detachment
+  (z_form). Salpeter growth needs t_need of PROPER time by z_obs.
+  Prediction: the host must have detached late enough — at z_form not
+  exceeding a critical bound (z_form ≲ X below); earlier detachment
+  means less proper time.
+  (Salpeter: 0.045 Gyr/e-fold, ε=0.1, Eddington-limited; seed = light 1e2 M☉.)
+
+                    object |  z_obs |     M_BH | e-folds |  t_need | t_avail_max | verdict
+  ------------------------------------------------------------------------------------------------
+       UHZ1 (JWST/Chandra) | 10.073 |  4.0e+07 |    12.9 |   0.58G |       0.49G | FAIL: max avail 0.49G &lt; need (needs heavy seed or super-Edd)
+               GN-z11 (BH) | 10.603 |  1.6e+06 |     9.7 |   0.44G |       0.45G | OK if detached at z_form ≲ 11.0
+                CEERS 1019 |  8.679 |  1.0e+07 |    11.5 |   0.52G |       0.64G | OK if detached at z_form ≲ 11.4
+       J0313-1806 (quasar) |  7.642 |  1.6e+09 |    16.6 |   0.75G |       0.80G | OK if detached at z_form ≲ 8.4
+       J1342+0928 (quasar) |  7.541 |  7.8e+08 |    15.9 |   0.71G |       0.82G | OK if detached at z_form ≲ 9.0
+       J1120+0641 (quasar) |  7.085 |  2.0e+09 |    16.8 |   0.76G |       0.91G | OK if detached at z_form ≲ 9.1
+
+  Reading: t_avail_max is the MOST proper time the island model can give
+  (host detaches just before z_obs). If t_avail_max ≥ t_need, the object
+  is comfortably accommodated; the 'z_form ≲ X' bound says how late the
+  host must have detached to have enough time (earlier detachment = less
+  proper time, since more life is spent on the compressed relative clock).
+  A FAIL row (Eddington-limited, light seed) means the object needs a
+  heavy seed — the same conclusion the discoverers themselves draw for
+  UHZ1 (direct-collapse seed; Natarajan et al. 2024, ApJL 960, L1);
+  a SYSTEMATIC pattern of failures at any reasonable seed would falsify
+  the island picture. Compare bounds to observed galaxy assembly (z≈14).
+  This is a CORE-level test; it does not depend on the optical μ_d.
+
+======================================================================
+[9] Zero-below-threshold control + the "amplitude ↔ threshold" degeneracy
+======================================================================
+  The correction is identically zero at z ≤ z_detach:
+       z   D_M base correction
+  ----------------------------
+    0.50     1932.8       +0.0
+    1.00     3384.2       +0.0
+    2.33     5792.7       +0.0
+    3.00     6538.0       +0.0
+    4.00     7335.6       +0.0
+    4.53     7653.3       +0.0
+    4.63     7707.7      +49.3  &lt;- switched on
+    5.00     7896.9     +220.4  &lt;- switched on
+   10.00     9247.2    +1433.1  &lt;- switched on
+
+  max |correction| at z ≤ z_detach = 0.00 Mpc (≈0)
+  -&gt; all 6 DESI bins (z ≤ 2.33) are insensitive to the correction; the
+     results of Part I ([1]–[5]) are fully preserved.
+
+  The degeneracy WITHOUT postulate P6 (what exactly the postulate fixes):
+  the equation A·(c/k)·[arcsin μ_cmb − arcsin μ_d] = shortfall has a
+  curve of solutions (A, μ_d) — all give the same distance to the CMB.
+       A        μ_d   z_detach
+  ------------------------------
+     0.5   0.923705      1.506
+     0.8   0.969868      3.344
+     1.0   0.980640      4.526  &lt;- fixed by P6 (A≡1)
+     1.2   0.986514      5.690
+     2.0   0.995097     10.266
+     5.0   0.999190     26.922
+
+  One observation fixes one parameter: zero degrees of freedom.
+  With the form fixed by P6, μ_d is a measured constant of the second
+  tier (the same status as μ₀ in the core); z_detach is not a prediction.
+
+======================================================================
+[10] The trace of μ_d, the corrected horizon, and the early-islands note
+======================================================================
+         z object                  correction to D_M
+  ----------------------------------------------------
+      4.53 detachment threshold              +0.0 %
+      5.00 JWST galaxies                     +2.8 %
+      6.00 quasars                           +7.1 %
+      8.00 reionization                     +12.4 %
+     11.00 first galaxies                   +16.6 %
+   1089.92 CMB (calibration)                +26.9 %
+
+  Particle horizon: base = 10953.6 Mpc;  with the correction = 13905.7 Mpc
+  (32.9 Mpc beyond the last-scattering surface — the CMB lies almost flush against the horizon)
+
+  Reach of the probes:
+    DESI DR2 (available)  z ≤ 2.33   — below the threshold
+    DESI DR3 (~2027)      z ≤ 3.55   — below the threshold
+    DESI-II/LBG (~2029)   2.5&lt;z&lt;3.5  — below the threshold
+  The radial BAO in the window 2.33–4.53 is a trace of the CORE (D_H = c/H),
+  not of μ_d; the threshold itself affects only D_M above z≈4.5, where no
+  precise rulers exist apart from the CMB calibration: a second independent
+  anchor is out of reach until a precise distance scale appears at z ≳ 5–6.
+
+  CONSISTENCY NOTE (P6, early islands — paper §9):
+      the observed galaxies (JWST, z ≈ 10–14; μ_e(z=14) = 0.9972)
+      lie ABOVE the detachment threshold (μ_d = 0.9806, z_detach = 4.53).
+      This is consistent with P6 as formulated: μ_d is the detachment
+      horizon of the DOMINANT (path-averaged) fraction, while the first
+      objects are patches of the monolith that never uncoupled — where
+      binding is maximal, the original stuck-together state persists as
+      the surrounding medium detaches, and such a patch separates from
+      it as an island earlier than the mean threshold. Objects are not
+      assembled anew; they simply un-stick at different epochs. Their
+      clocks switch at their OWN z_form — see the island-time test [6b].
+      The distance arithmetic and the results of Part I do not depend
+      on this narrative.
+
+
+######################################################################
+#  PART III — STRUCTURE GROWTH (block [11])
+######################################################################
+DSIC growth (GR limit on the DSIC background), mu0=0.76
+  sample: Gold-2017, 18 points (WiggleZ covariance included)
+  formal minimum: Om0=0.185, s8=0.955, chi2=11.21, chi2/dof=0.70
+  (the minimum lies inside the grid; the valley is strongly degenerate — see below)
+
+  fσ8 degeneracy (the data constrain S8, not Om0 and s8 separately):
+   Om0    s8*     chi2/dof   S8=s8*sqrt(Om0/0.3)
+  0.15   1.040   0.72       0.735
+  0.20   0.925   0.70       0.755
+  0.25   0.835   0.73       0.762
+  0.30   0.770   0.78       0.770
+  0.35   0.715   0.84       0.772
+  0.40   0.670   0.91       0.774
+  =&gt; S8 is stable: 0.761 ± 0.013
+
+  At fixed Om0=0.30 (Planck-like):
+    s8=0.770, chi2=12.47, chi2/dof=0.73
+    S8=0.770
+
+   z    fσ8_model   fσ8_obs±err   (Om0=0.30)
+  0.02   0.399       0.428±0.046
+  0.02   0.399       0.398±0.065
+  0.02   0.399       0.314±0.048
+  0.10   0.414       0.370±0.130
+  0.15   0.421       0.490±0.145
+  0.17   0.424       0.510±0.060
+  0.18   0.425       0.360±0.090
+  0.38   0.440       0.440±0.060
+  0.25   0.432       0.351±0.058
+  0.37   0.439       0.460±0.038
+  0.32   0.437       0.384±0.095
+  0.59   0.440       0.488±0.060
+  0.44   0.441       0.413±0.080
+  0.60   0.439       0.390±0.063
+  0.73   0.434       0.437±0.072
+  0.60   0.439       0.550±0.120
+  0.86   0.425       0.400±0.110
+  1.40   0.375       0.482±0.116
+======================================================================
+Done. Part I: SNe downloaded, DESI passed the self-check, the core's
+identities hold, parameter uncertainties computed from the Hessian.
+Part II: the Planck reference data verified, the threshold μ_d fixed via θ*
+(r* is borrowed — flagged), the late Universe untouched, the early-islands
+consistency note printed (observed high-z galaxies = patches of the monolith
+that never uncoupled, per P6). μ_d is a calibration against a single
+observation with the form fixed by the postulate.
+Part III: structure growth fσ8 on the DSIC background (GR limit) checked
+against the Gold-2017 compilation; the data are degenerate in (Ω_m0, σ8),
+the invariant S8 is reported. Status — a survival test, not a derivation
+from the core.
+======================================================================
+</pre></div></div>
