@@ -4,19 +4,22 @@
 
 Space and matter as two sides of one flow.
 
-The model treats space and matter as complementary manifestations of a single continuous flow.
+The model treats space and objectness as two poles of a single conserved quantity moving along the circle `S² + O² = R²` under one uniform flow. An internal observer, itself built of objectness, accesses only the modulus projection; its rod and clock uniquely fix the observable scale factor `b(μ) = √(1−μ²)/μ²`, from which redshift, kinematics and distances follow. Late-time acceleration emerges as a kinematic consequence of the divergence of the two scales — no dark energy is introduced. The entire late-Universe cosmology is generated from a single observable phase parameter, with the present epoch at `μ₀ = 0.7600 ± 0.0091`.
 
-Rather than introducing dark energy, DSIC interprets the observed late-time acceleration through the geometry of this dual-scale evolution. The entire late-Universe cosmology is generated from a single observable phase parameter μ, with the present epoch corresponding to μ₀ ≈ 0.76.
+The shape of `b(μ)` has no functional freedom, so the parameter measured at low redshift forcibly determines the high-`z` behaviour: the divergences from ΛCDM at `z > 3` are predictions, not tuning.
 
-The core implementation reproduces the expansion history of the mid-to-late Universe using one free cosmological parameter. It matches ΛCDM on the full Pantheon+SH0ES supernova sample (Δχ² ≈ +0.05), while also providing consistent fits to BAO, cosmic chronometers, the transition redshift, and the age of the Universe. On the joint SN+BAO fit DSIC is marginally preferred (Δχ² ≈ −5.0, a weak formal preference).
+**Current version: DSIC 2** (root of the repository). The first edition is preserved unchanged in `article/`.
 
-The paper additionally carries a **second floor** (the early Universe, via the detachment threshold μ_d) and a **structure-growth survival check** (fσ₈ on the DSIC background). Both are kept explicitly separate from the self-contained core. All empirical claims are reproduced by a single self-contained script included in the repository.
+---
 
 ## Repository structure
 
 ```
 README.md
-article/
+DSIC 2 - Azamat Zaseev.md        <- current paper (v2)
+dsic2_test.py                    <- current validation / reproducibility script (v2)
+dsic2_test_results.txt           <- full output of a reference run of dsic2_test.py
+article/                         <- first edition (v1), kept as released
   en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.pdf
   en dsic_results.pdf
   Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.pdf
@@ -27,143 +30,69 @@ article/
     dsic_graph.png
     dsic_test.py
     dsic_formulas.mmd
-    TEX/
-      Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
-      dsic_results.tex
+    TEX/ ...
   EN/
     en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md
     en dsic_results.md
     en dsic_graph.png
     en_dsic_test.py
     en dsic_formulas.mmd
-    TEX/
-      en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex
-      en dsic_results.tex
+    TEX/ ...
 ```
 
 ---
 
-## article/RU/ & article/EN/
+## DSIC 2 — Azamat Zaseev.md (current paper)
 
-Each language directory contains the same set of files:
+A single self-contained document, organized in two tiers plus a growth check:
 
-- **Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md** — the main paper (Markdown)
-- **dsic_results.md** — summary of numerical results
-- **dsic_graph.png** — nine-panel visualization of cosmological fits and comparisons
-- **dsic_test.py** — empirical validation and reproducibility pipeline
-- **dsic_formulas.mmd** — Mermaid source of the DSIC formula diagram
-- **TEX/** — LaTeX sources for the paper and results
+**Part I — the core (late Universe, z < 2.3).** Postulates; the dual-scale circle `S ↔ O`; the spinor (Möbius) form of the core `ψ = R·e^{iφ/2}` — the sign of objectness as the second sheet of a two-fold covering forced by the postulates; the modulus projection `μ`; the observer's rod and clock; the scale factor, redshift, kinematics with the built-in deceleration→acceleration crossover at `μ_cross = √(3−√5)` (`z_t = 0.769`); closed-form distances and a finite particle horizon; the mapping to the Friedmann form via `w_eff(z)`; machine verification of the internal identities; the confrontation with data; falsifiable high-`z` predictions.
 
----
+**Part II — the second tier (early Universe).** One new entity (binding of objects), one postulate (P6) and one measured constant — the detachment horizon `μ_d = 0.9806` (`z ≈ 4.53`), calibrated against the directly measured angle `θ*` (calibration, not a prediction). The correction is identically zero below the threshold, so the late Universe is untouched. The same threshold sets the domain of the clock factor: clocks are normal inside the connected monolith and relative after detachment. The first objects are patches of the monolith that never uncoupled — expected early islands, not a contradiction with JWST galaxies at `z ≈ 10–14`. Island time makes the budget of every early object individually testable.
 
-## Main paper — Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev
+**Part III — structure growth.** Linear perturbation growth on the DSIC background in the GR limit against the Gold-2017 `fσ₈` compilation; the data constrain the invariant `S₈ = 0.761 ± 0.013`. A survival test, not a derivation from the core.
 
-The main DSIC paper is a single self-contained document, organized in three parts:
+The status of every claim is separated explicitly: the core is self-contained; the extensions are not derived from it.
 
-Part I — core model (late Universe, z < 2.3):
-- dual-scale geometry (S ↔ O)
-- observable projection (μ)
-- scale factor
-- Hubble expansion
-- luminosity distance
-- cosmological observables
-- mapping to standard Friedmann form via an effective equation of state w_eff(z)
+### Headline results (all reproduced by `dsic2_test.py`)
 
-Part II — second tier (early Universe):
-- detachment threshold μ_d extending the model toward the CMB distance (calibration only)
-- gravitational space-redistribution module (appendix, exploratory)
+| probe | data | DSIC vs ΛCDM |
+|---|---|---|
+| supernovae | Pantheon+SH0ES, 1657 SN, STAT+SYS | indistinguishable, `Δχ² = +0.05` |
+| parameter | χ² Hessian | `μ₀ = 0.7600 ± 0.0091` (~1.2 %) |
+| joint SN+BAO | + DESI DR2, full 12×12 cov. | DSIC mildly preferred, `Δχ² = −5.0` |
+| BAO `D_M`–`D_H` | DESI DR2 | `χ²/dof` 1.04 vs 1.36 |
+| `Om(z)` | chronometers + DESI | does **not** discriminate (sign set by `H₀`) |
+| high `z` | prediction | `D_H/r_d` diverges up to −5 % by `z = 3.5` |
+| CMB distance | closure to `θ*` | exact by construction (`μ_d` calibrated) |
+| cosmic time | detachment horizon | `t₀ = 13.5–13.6` Gyr (stellar anchor) |
+| SMBH test | 6 early black holes | 5/6 accommodated; UHZ1 → heavy seed, same as its discoverers conclude |
+| structure growth | Gold-2017, 18 points | `χ²/dof` 0.73 vs 0.74; `S₈ = 0.761 ± 0.013` |
 
-Part III — structure growth:
-- linear growth of density perturbations on the DSIC background in the GR limit
-- comparison with the fσ₈ compilation
-
-Applicability of each part is explicitly separated: the core is self-contained; extensions are not derived from it.
+In every fit DSIC and ΛCDM carry the same number of free parameters, so `Δχ² = ΔAIC = ΔBIC`.
 
 ---
 
-## dsic_formulas.mmd
+## dsic2_test.py (current script)
 
-Mermaid source of the DSIC formula diagram.
+One self-contained empirical-validation pipeline (`numpy`, `scipy`; runtime 10–15 minutes; the Pantheon+SH0ES catalog is downloaded automatically, ~65 MB). All hard-coded figures are documented in place and verified against the originals:
 
-The diagram describes the structure of the model from the action principle through observable cosmological relations and marks the boundary of applicability.
+- **Pantheon+SH0ES** supernovae (auto-download, full STAT+SYS covariance);
+- **DESI DR2 BAO** (Table IV, with a built-in self-check against the official values);
+- **cosmic chronometers** (33 points; full Moresco et al. 2020 covariance for the 15-point subset);
+- **Planck 2018** reference calibration (column `base_plikHM_TTTEEE_lowl_lowE_lensing`, Planck Legacy Archive tables);
+- **early SMBHs** with spectroscopic redshifts and masses verified against the discovery papers (Bogdán 2024; Natarajan 2024; Goulding 2023; Maiolino 2024; Larson 2023; Wang 2021; Bañados 2018; Mortlock 2011);
+- **Gold-2017 `fσ₈`** growth compilation (WiggleZ covariance included).
 
-The rendered output is stored as `dsic_graph.png`.
+Blocks `[0]–[11]`: DESI self-check; machine verification of the core identities; the spinor (Möbius) core — 8 identities plus the forcedness test of the two-sheet covering; anchored SN fit with Hessian errors; STAT-ONLY robustness; joint SN+BAO with free `r_d`; the `Om(z)` diagnostic in two covariance modes; high-`z` predictions; piecewise cosmic time across the detachment horizon; the island-time test on real SMBHs; the Planck self-check; fixing `μ_d` via `θ*`; the zero-below-threshold control and the amplitude↔threshold degeneracy; the trace of `μ_d` and probe reach; structure growth and `S₈`.
 
----
-
-## dsic_test.py
-
-Empirical validation and reproducibility pipeline.
-
-The script includes:
-- Pantheon+SH0ES supernova compilation
-- DESI DR2 BAO dataset
-- cosmic chronometers compilation
-- Planck 2018 reference calibration
-- Gold-2017 fσ₈ growth dataset
-
-It computes χ² for DSIC and ΛCDM using identical parameter counts.
-
-Includes:
-- late-time expansion fit
-- BAO consistency checks
-- joint SN+BAO analysis
-- high-redshift extrapolation tests
-- structure growth evolution
-
-Runtime: 10–15 minutes.
+`dsic2_test_results.txt` is the complete console output of a reference run — every number quoted in the paper can be located there by its block tag.
 
 ---
 
-## dsic_results.md
+## article/ — first edition (v1)
 
-Summary of numerical results:
-- Supernova fit: Δχ² ≈ +0.05
-- Joint SN+BAO: Δχ² ≈ −5.0
-- BAO consistency
-- Cosmic chronometers agreement
-- Transition redshift consistency
-- High-redshift behavior (z ≈ 5–12)
-- Structure growth consistency
-
----
-
-## dsic_graph.png
-
-Nine-panel visualization of cosmological fits and comparisons.
-
----
-
-## TEX/
-
-LaTeX sources, mirroring the paper and the results summary:
-- **Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.tex** — LaTeX source of the main paper
-- **dsic_results.tex** — LaTeX source of the numerical results summary
-
----
-
-## Core model
-
-- one cosmological parameter (μ₀)
-- analytic closed-form evolution
-- no dark energy
-- direct observational comparison
-
----
-
-## Second floor
-
-- CMB extension via detachment threshold μ_d
-- calibration-only parameterization
-- exploratory gravitational module
-
----
-
-## Structure growth
-
-- linear perturbation evolution on DSIC background
-- comparison with fσ₈ data
-- invariant constraint on S₈
+The original release is preserved unchanged for reference: the v1 paper (RU/EN, Markdown, PDF and LaTeX), the v1 validation script, the results summary, the nine-panel figure `dsic_graph.png` and the Mermaid formula diagram `dsic_formulas.mmd`. The v2 paper supersedes it: v2 restructures the exposition, adds the spinor form of the core, the detachment horizon as the domain of the clock factor, piecewise and island time with the SMBH test, the structure-growth check, and source-verified reference data.
 
 ---
 
@@ -171,8 +100,8 @@ LaTeX sources, mirroring the paper and the results summary:
 
 If you use the DSIC (Dual Scale Inversion Cosmology) model, its equations, derivations, figures, or ideas, please cite the original work.
 
-Azamat Zaseev  
-Dual Scale Inversion Cosmology (DSIC)  
+Azamat Zaseev
+Dual Scale Inversion Cosmology (DSIC)
 https://github.com/az-zase/DSIC.git
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21198493.svg)](https://doi.org/10.5281/zenodo.21198493)
