@@ -4,10 +4,9 @@
 
 Independent Researcher, Россия
 ORCID: 0009-0004-9345-1069
-DOI: https://doi.org/10.5281/zenodo.21198494
+DOI: https://doi.org/10.5281/zenodo.21198493
 Код и данные: https://github.com/az-zase/DSIC
 
-*Версия: июль 2026 (переработанная редакция)*
 
 ---
 
