@@ -75,12 +75,6 @@ Blocks `[0]–[11]`: DESI self-check; machine verification of the core identitie
 
 ---
 
-## article/ — first edition (v1)
-
-The original release is preserved unchanged for reference: the v1 paper (RU/EN, Markdown, PDF and LaTeX), the v1 validation script, the results summary, the nine-panel figure `dsic_graph.png` and the Mermaid formula diagram `dsic_formulas.mmd`. The v2 paper supersedes it: v2 restructures the exposition, adds the spinor form of the core, the detachment horizon as the domain of the clock factor, piecewise and island time with the SMBH test, the structure-growth check, and source-verified reference data.
-
----
-
 ## Citation
 
 If you use the DSIC (Dual Scale Inversion Cosmology) model, its equations, derivations, figures, or ideas, please cite the original work.
