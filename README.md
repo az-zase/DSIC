@@ -16,8 +16,9 @@ The shape of `b(μ)` has no functional freedom, so the parameter measured at low
 
 ```
 README.md
-ru DSIC 2 - Azamat Zaseev.md
+en DSIC 2 - Azamat Zaseev.pdf
 en DSIC 2 - Azamat Zaseev.md
+ru DSIC 2 - Azamat Zaseev.md
 dsic2_formulas.mmd
 dsic2_test.py                    <- current validation / reproducibility script (v2)
 dsic2_test_results.txt           <- full output of a reference run of dsic2_test.py
