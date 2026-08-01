@@ -8,8 +8,6 @@ The model treats space and objectness as two poles of a single conserved quantit
 
 The shape of `b(μ)` has no functional freedom, so the parameter measured at low redshift forcibly determines the high-`z` behaviour: the divergences from ΛCDM at `z > 3` are predictions, not tuning.
 
-**Current version: DSIC 2** (root of the repository). The first edition is preserved unchanged in `article/`.
-
 ---
 
 ## Repository structure
