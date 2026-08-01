@@ -16,30 +16,12 @@ The shape of `b(μ)` has no functional freedom, so the parameter measured at low
 
 ```
 README.md
-DSIC 2 - Azamat Zaseev.md        <- current paper (v2)
+ru DSIC 2 - Azamat Zaseev.md
 en DSIC 2 - Azamat Zaseev.md
 dsic2_formulas.mmd
 dsic2_test.py                    <- current validation / reproducibility script (v2)
 dsic2_test_results.txt           <- full output of a reference run of dsic2_test.py
-article/                         <- first edition (v1), kept as released
-  en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.pdf
-  en dsic_results.pdf
-  Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.pdf
-  dsic_results.pdf
-  RU/
-    Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md
-    dsic_results.md
-    dsic_graph.png
-    dsic_test.py
-    dsic_formulas.mmd
-    TEX/ ...
-  EN/
-    en Dual Scale Inversion Cosmology (DSIC) - Azamat Zaseev.md
-    en dsic_results.md
-    en dsic_graph.png
-    en_dsic_test.py
-    en dsic_formulas.mmd
-    TEX/ ...
+
 ```
 
 ---
