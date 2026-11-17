@@ -91,7 +91,7 @@ The paper shows how far this idea goes under strict calculation.
 - This function alone does not describe the early Universe, and the reason is quantitative (§8). A second principle is needed: matter is contained in space and, when the scale of space is small, it is compressed as in a press. Together with the core, it gives the law of internal time and one rate formula for the whole history (§9); that compressed matter behaves as dust remains an assumption.
 - In joint fits with supernovae, BAO and the CMB the model loses to ΛCDM: by 2.3σ with the CMB angle alone and by 3.0σ with the full spectrum (§10). The cause is one: the model’s own sound horizon is 1.8 % shorter than BAO require (§10.2). If there is about 6 % less matter than the switch-on point gives, the model describes all three data sets no worse than ΛCDM (§10.3); deriving this fraction from the principles has not yet been achieved. These results are reported on an equal footing with the rest.
 
-Every step carries a status, so that it is clear what it rests on: *(postulate)* is an adopted rule; *(derived)* follows from the postulates mathematically; *(tested)* is confirmed by calculation on data; *(open)* is unresolved; *(against the model)* is a result that works against it. The whole chain of formulas is collected in the formula map (Appendix A). All numbers in the tables are produced by the script `dsic3_test.py` from open data (Appendix C).
+Every step carries a status, so that it is clear what it rests on: *(postulate)* is an adopted rule; *(derived)* follows from the postulates mathematically; *(tested)* is confirmed by calculation on data; *(open)* is unresolved; *(against the model)* is a result that works against it. The whole chain of formulas is collected in the formula map (Appendix A). All numbers in the tables are produced by the script `dsic_test.py` from open data (Appendix C).
 
 ## 2. Principles
 
@@ -770,11 +770,11 @@ Each item is one step of the model: a formula, its meaning in one phrase, its st
 
 ## Appendix C. Data, method and reproduction
 
-All numbers in the tables of the paper are produced by a single script, `dsic3_test.py`, from the repository [github.com/az-zase/DSIC](https://github.com/az-zase/DSIC); the full output of the Google Colab runs from which the numbers of the paper are taken is in the same place, in the file `dsic3_test_results.txt`. numpy and scipy are required; for the full CMB spectrum the script installs CAMB itself and downloads the open compressed Planck likelihood.
+All numbers in the tables of the paper are produced by a single script, `dsic_test.py`, from the repository [github.com/az-zase/DSIC](https://github.com/az-zase/DSIC); the full output of the Google Colab runs from which the numbers of the paper are taken is in the same place, in the file `dsic_test_results.txt`. numpy and scipy are required; for the full CMB spectrum the script installs CAMB itself and downloads the open compressed Planck likelihood.
 
-- `python dsic3_test.py`: the core, the early Universe, the language of dark energy, the tables of the late and joint fits, the analysis of the sound-horizon shortfall, structure growth, and the time budget of black holes. About a minute, including the data download.
-- `python dsic3_test.py --cmb`: in addition, five fits with the full CMB spectrum, the four of Table 7 and the $f$ probe. About two hours.
-- `python dsic3_test.py --cmb-f`: of the full-spectrum fits, only the $f$ probe. From 20 minutes to an hour.
+- `python dsic_test.py`: the core, the early Universe, the language of dark energy, the tables of the late and joint fits, the analysis of the sound-horizon shortfall, structure growth, and the time budget of black holes. About a minute, including the data download.
+- `python dsic_test.py --cmb`: in addition, five fits with the full CMB spectrum, the four of Table 7 and the $f$ probe. About two hours.
+- `python dsic_test.py --cmb-f`: of the full-spectrum fits, only the $f$ probe. From 20 minutes to an hour.
 
 **Data.** The script downloads them from the official sources and checks them against copies embedded in the file.
 
