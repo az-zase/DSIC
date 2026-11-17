@@ -29,7 +29,7 @@ dsic_test_results.txt       complete console output of the reference runs (Googl
 
 ## The paper
 
-The paper is available in Russian and English. `DSIC_3-Azamat_Zaseev` contains the following parts:
+The paper is available in Russian and English. `DSIC-Azamat_Zaseev` contains the following parts:
 
 - A plain-language introduction.
 - The six principles.
@@ -48,7 +48,7 @@ The paper is available in Russian and English. `DSIC_3-Azamat_Zaseev` contains t
 
 The HTML version computes its figures in the browser with the same formulas as the script, and switches between Russian and English without reloading; for a browser not set to Russian it opens in English. The two Markdown files have the same text, numbering and numbers as the HTML.
 
-### Results (all reproduced by `dsic3_test.py`)
+### Results (all reproduced by `dsic_test.py`)
 
 | probe | data | DSIC vs ΛCDM |
 |---|---|---|
@@ -74,7 +74,7 @@ Unless a row says otherwise, DSIC and ΛCDM have the same number of free paramet
 
 ---
 
-## dsic3_test.py
+## dsic_test.py
 
 The script is self-contained. It needs `numpy` and `scipy`. It downloads public data from the official sources; the DESI file is also checked against a copy embedded in the script:
 
@@ -86,12 +86,12 @@ The script is self-contained. It needs `numpy` and `scipy`. It downloads public 
 - **Early supermassive black holes:** redshifts and masses from the discovery papers.
 
 ```
-python dsic3_test.py           # everything except the full CMB spectrum, about a minute
-python dsic3_test.py --cmb     # + four full-spectrum fits and the f-probe, about two hours
-python dsic3_test.py --cmb-f   # only the f-probe with the full CMB spectrum, 20–60 minutes
+python dsic_test.py           # everything except the full CMB spectrum, about a minute
+python dsic_test.py --cmb     # + four full-spectrum fits and the f-probe, about two hours
+python dsic_test.py --cmb-f   # only the f-probe with the full CMB spectrum, 20–60 minutes
 ```
 
-In Google Colab, prefix the commands with `!`. The output is organized in blocks `[1]`–`[10]`, and each block names the tables and formulas of the paper that it checks. `dsic3_test_results.txt` holds the complete output of the Google Colab runs from which the paper's numbers are taken.
+In Google Colab, prefix the commands with `!`. The output is organized in blocks `[1]`–`[10]`, and each block names the tables and formulas of the paper that it checks. `dsic_test_results.txt` holds the complete output of the Google Colab runs from which the paper's numbers are taken.
 
 ---
 
