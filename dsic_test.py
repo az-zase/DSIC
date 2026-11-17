@@ -1221,7 +1221,7 @@ def block_cmb(SN):
 #  ЗАПУСК
 # ==============================================================================
 def main():
-    print("dsic3_test.py — проверка чисел статьи Dual Scale Inversion Cosmology")
+    print("dsic_test.py — проверка чисел статьи Dual Scale Inversion Cosmology")
     print(f"ω_r = {W_R:.4e}; поправка приближения r_s (калибровка на ΛCDM Planck): {CAL:.6f}")
     block_core()
     M = block_early()
@@ -1249,7 +1249,7 @@ def main():
         return o
     js = json.dumps(clean(R), ensure_ascii=False)
     print(js)
-    with open(os.path.join(DATA_DIR, "dsic3_test_results.json"), "w") as fh:
+    with open(os.path.join(DATA_DIR, "dsic_test_results.json"), "w") as fh:
         fh.write(js)
     print(f"\nГотово за {time.time() - T_START:.0f} с.")
 
