@@ -1,5 +1,7 @@
 # DSIC
 
+![Dual Scale Inversion Cosmology](DSIC.jpg)
+
 **Dual Scale Inversion Cosmology (DSIC)** is a cosmological model in which the Universe has no absolute scale. Cosmic acceleration is geometric: no dark-energy component is introduced.
 
 Space and objectness (everything that exists in space) are treated as two poles of one conserved norm, `S² + O² = R²`. The objectness fraction `μ = |O|/R` flows uniformly. An observer is itself built of objectness and sees only the moduli of the poles. Its rod and clock fix the observable scale factor `b(μ) = √(1−μ²)/μ²`, and redshift, kinematics and distances follow from it. Acceleration is the divergence of the two scale factors seen from inside. It begins at `μ² = 3 − √5`, which corresponds to `z_t ≈ 0.77`. The late Universe has one shape parameter, the present phase `μ₀`. With `H₀` this makes two parameters, the same as flat ΛCDM.
@@ -13,8 +15,9 @@ Every step in the paper carries a status: postulate, derived, tested on data, op
 ## Repository structure
 
 ```
-DSIC_3-Azamat_Zaseev.html    the paper (in Russian) with interactive figures; opens in any browser
-DSIC_3-Azamat_Zaseev.md      the same paper as plain text: Markdown with TeX formulas, no figures
+DSIC_3_ru_en-Azamat_Zaseev.html    the paper with interactive figures, in Russian and English (RU / EN switch); opens in any browser
+DSIC_3_ru-Azamat_Zaseev.md      the paper as plain text in Russian: Markdown with TeX formulas, no figures
+DSIC_3_en-Azamat_Zaseev.md   the same plain-text paper in English
 DSIC.jpg                     cover image
 README.md
 dsic3_formulas.mmd           formula map (Mermaid): how to apply the formulas and how they are derived
@@ -26,7 +29,7 @@ dsic3_test_results.txt       complete console output of the reference runs (Goog
 
 ## The paper
 
-`DSIC_3-Azamat_Zaseev` contains the following parts:
+The paper is available in Russian and English. `DSIC_3-Azamat_Zaseev` contains the following parts:
 
 - A plain-language introduction.
 - The six principles.
@@ -43,7 +46,7 @@ dsic3_test_results.txt       complete console output of the reference runs (Goog
 - Limitations and open questions.
 - Appendices: a formula map, notation, and data and reproduction.
 
-The HTML version computes its figures in the browser with the same formulas as the script. The Markdown version has the same text, numbering and numbers.
+The HTML version computes its figures in the browser with the same formulas as the script, and switches between Russian and English without reloading; for a browser not set to Russian it opens in English. The two Markdown files have the same text, numbering and numbers as the HTML.
 
 ### Results (all reproduced by `dsic3_test.py`)
 
