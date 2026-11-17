@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-dsic3_check.py — независимая проверка всех чисел статьи DSIC 3
-("Dual Scale Inversion Cosmology", А. Засеев).
+dsic3_test.py — независимая проверка всех чисел статьи
+"Dual Scale Inversion Cosmology" (А. Засеев).
 
 Запуск в Google Colab:
-    !python dsic3_check.py                # всё, кроме полного спектра реликта (около минуты)
-    !python dsic3_check.py --cmb          # плюс CAMB + plik-lite (час–полтора)
+    !python dsic3_test.py                # всё, кроме полного спектра реликта (около минуты)
+    !python dsic3_test.py --cmb          # плюс CAMB + plik-lite: четыре подбора таблицы 7 и проба f (около двух часов)
+    !python dsic3_test.py --cmb-f        # только проба f с полным спектром реликта (от 20 минут до часа)
 
 Нужны numpy и scipy. Для --cmb скрипт сам ставит camb и скачивает planck-lite-py.
 Все наблюдательные данные скачиваются из официальных репозиториев и сверяются
@@ -21,7 +22,6 @@ dsic3_check.py — независимая проверка всех чисел �
   * звуковой горизонт: r_s(z) = ∫ c_s dz / H, z* = 1089.92, z_d = 1059.94 (Planck 2018);
     поправка приближения откалибрована на ΛCDM Planck и одинакова для обеих моделей.
 """
-import sys; sys.argv.append("--cmb")
 import os, sys, json, time, urllib.request
 import numpy as np
 from scipy.integrate import quad, solve_ivp
@@ -29,6 +29,7 @@ from scipy.optimize import minimize, minimize_scalar, brentq
 
 T_START = time.time()
 RUN_CMB = "--cmb" in sys.argv
+RUN_CMB_F = "--cmb-f" in sys.argv                # только проба f с полным спектром реликта
 DATA_DIR = os.environ.get("DSIC_DATA", "dsic_data")
 os.makedirs(DATA_DIR, exist_ok=True)
 R = {}                                   # все итоговые числа — сюда, в конце печатаются как JSON
@@ -860,6 +861,94 @@ def block_joint(SN):
 
 
 # ==============================================================================
+#  [7b] ГДЕ НЕ СХОДИТСЯ ЗВУКОВОЙ ГОРИЗОНТ
+# ==============================================================================
+class DSICAmp(DSIC):
+    """Проба: раньше точки включения веществом считается только доля f массы связи ядра в этой точке,
+    остаток (1 - f) продолжается в прошлое как постоянная плотность. Темп непрерывен; f = 1 — модель статьи."""
+
+    def __init__(self, mu0, h, f):
+        super().__init__(mu0, h)
+        self.f = f
+        self.Xc = (1 - self.Or) * (1 + self.zc) ** 3 * self.Fc * (1 - f)
+        self.Am = f * self.Am                                # вещество — доля f; остаток входит в X(z)
+
+    def F(self, z):
+        z = np.asarray(z, float)
+        early = self.f * self.Fc + self.Xc / ((1 - self.Or) * (1 + z) ** 3)
+        return np.where(z <= self.zc, super().F(z), early)
+
+
+def omega_m_at(M, z):
+    """Плотность вещества в эпоху z в единицах ω = Ω h²: множитель при (1+z)³ в формуле темпа."""
+    return float((1 - M.Or) * M.F(z) * M.h ** 2)
+
+
+def z_equality(M):
+    return brentq(lambda z: (1 - M.Or) * (1 + z) ** 3 * M.F(z) - M.Or * (1 + z) ** 4, 100, 1e5)
+
+
+def block_sound(SN):
+    head("[7b] Где не сходится звуковой горизонт")
+    S, J = SN["hf"], R["joint"]["n13"]
+    out = {}
+    # 1. фаза, которую выбирают поздние данные (SN + BAO со свободным r_d), и угол реликта
+    mu_l = R["late"]["sn_bao"]["n13"]["mu0"]
+    h = solve_h_theta(lambda hh: DSIC(mu_l, hh))
+    M = DSIC(mu_l, h)
+    rs, rd, need = r_sound(M, Z_STAR), r_sound(M, Z_DRAG), chi2_bao(M, None)[1]
+    out["late_phase"] = dict(mu0=mu_l, H0=100 * h, rd=rd, rd_need=need, deficit=100 * (1 - rd / need))
+    print(f"  фаза поздних данных μ₀ = {mu_l:.4f}, H₀ из угла реликта {100 * h:.2f}: r_d модели {rd:.2f} Мпк, "
+          f"BAO нужен {need:.2f} — на {100 * (1 - rd / need):.2f} % короче")
+    # 2. когда набирается звуковой горизонт и где идёт свет
+    frac = {f"{Z:.0e}": r_sound(M, Z) / rs for Z in (1e4, 1e5, 1e6)}
+    out["rs_frac"] = frac
+    print("  доля r*, набранная раньше эпохи z: " + ", ".join(f"z > {k}: {100 * v:.2f} %" for k, v in frac.items()))
+    dms = DM(M, Z_STAR)
+    path = dict(low=DM(M, 2.33) / dms, high=1 - DM(M, 2.33) / dms)
+    out["path"] = path
+    print(f"  путь света до реликта: от нас до z = 2.33 — {100 * path['low']:.1f} %, от z = 2.33 до рекомбинации — {100 * path['high']:.1f} %")
+    L = LCDM(J["lcdm"]["Om"], J["lcdm"]["H0"] / 100)
+    ratio = dict(dsic=DM(M, Z_STAR) / DM(M, 2.33), lcdm=DM(L, Z_STAR) / DM(L, 2.33))
+    out["dm_ratio"] = ratio
+    lo, hi = R["early_misc"]["need"]
+    print(f"  D_M(z*)/D_M(2.33): DSIC {ratio['dsic']:.4f}, ΛCDM (совместный) {ratio['lcdm']:.4f}; нужно {lo:.3f}–{hi:.3f}")
+    # 2b. что дал бы сдвиг точки включения: масса связи ядра там минимальна, поэтому любой сдвиг добавляет вещество
+    shift = {f"{zs:g}": float(M.Ecore(zs) ** 2 / (1 + zs) ** 3 / M.Fc) for zs in (1.2, 2.0, 3.0, 4.0)}
+    out["shift"] = shift
+    print(f"  точка включения z_h = {M.zc:.3f}; включение в другой точке дало бы вещества больше на: "
+          + ", ".join(f"z = {k}: {100 * (v - 1):+.1f} %" for k, v in shift.items()))
+    # 3. что делает свободный w_c
+    Mp = DSIC(J["dsic"]["mu0"], J["dsic"]["H0"] / 100)
+    Mw = DSIC(J["wc"]["mu0"], J["wc"]["H0"] / 100, J["wc"]["wc"])
+    sh = (73.04 - J["wc"]["H0"]) / np.hypot(1.04, J["wc"]["H0_err"])
+    out["wc"] = dict(om_p6=omega_m_at(Mp, Z_STAR), om_wc=omega_m_at(Mw, Z_STAR), zeq_p6=z_equality(Mp), zeq_wc=z_equality(Mw),
+                     age_wc=age(Mw, 0), sh0es_sigma=sh)
+    print(f"  свободный w_c: вещество на рекомбинации ω_m = {out['wc']['om_wc']:.4f} (при w_c = 0: {out['wc']['om_p6']:.4f}), "
+          f"равенство вещества и излучения z = {out['wc']['zeq_wc']:.0f} (при w_c = 0: {out['wc']['zeq_p6']:.0f}); "
+          f"H₀ от SH0ES (73.04 ± 1.04) на {sh:.1f}σ")
+    # 4. проба: меньше вещества, чем масса связи в точке включения
+    def parts(Mx):
+        r = r_sound(Mx, Z_DRAG)
+        return chi2_sn_marg(Mx.E, S), chi2_bao(Mx, r)[0], chi2_theta(Mx), r
+    f = lambda p: 1e30 if not (0.6 < p[0] < 0.9 and 0.5 < p[1] < 0.9 and 0.5 < p[2] < 1.2) else sum(parts(DSICAmp(*p))[:3])
+    r = minimize(f, [0.762, 0.675, 0.92], method="Nelder-Mead", options=dict(xatol=1e-6, fatol=1e-6, maxiter=4000))
+    r = minimize(f, r.x, method="Nelder-Mead", options=dict(xatol=1e-7, fatol=1e-7, maxiter=4000))
+    e = hessian_err(f, r.x, [1e-3, 2e-3, 3e-3])
+    Ma = DSICAmp(*r.x)
+    p = parts(Ma)
+    out["amp"] = dict(mu0=r.x[0], mu0_err=e[0], H0=100 * r.x[1], H0_err=100 * e[1], f=r.x[2], f_err=e[2], sn=p[0], bao=p[1], th=p[2],
+                      tot=r.fun, rd=p[3], dchi2=r.fun - J["lcdm"]["tot"], dchi2_f1=J["dsic"]["tot"] - r.fun,
+                      om=omega_m_at(Ma, Z_STAR), rest_zh=Ma.Xc / float(Ma.E(Ma.zc)) ** 2)
+    a = out["amp"]
+    print(f"  проба «вещества меньше на долю 1 − f»: μ₀ = {a['mu0']:.4f} ± {a['mu0_err']:.4f}, H₀ = {a['H0']:.2f} ± {a['H0_err']:.2f}, "
+          f"f = {a['f']:.3f} ± {a['f_err']:.3f}; χ²: SN {a['sn']:.2f}, BAO {a['bao']:.2f}, θ* {a['th']:.2f}, итого {a['tot']:.2f}, r_d = {a['rd']:.2f}")
+    print(f"    Δχ² к ΛCDM = {a['dchi2']:+.2f}; f = 1 хуже на {a['dchi2_f1']:.2f}; ω_m на рекомбинации = {a['om']:.4f}; "
+          f"доля остатка в темпе при z_h: {100 * a['rest_zh']:.1f} %")
+    R["sound"] = out
+
+
+# ==============================================================================
 #  [8] РОСТ СТРУКТУР fσ8
 # ==============================================================================
 def block_growth():
@@ -942,13 +1031,30 @@ def block_cmb(SN):
     def dsic_de(M):
         """Пространство X(z), которое прибавляет ядро, как гладкая жидкость с таблицей w(a) (PPF)."""
         zc = M.zc
-        z = np.concatenate([np.linspace(0, 0.98 * zc, 400), [0.985 * zc, 0.99 * zc]])
-        a = 1 / (1 + z[::-1])
         d = 1e-5
-        w = -1 + (np.log(M.X(z + d)) - np.log(M.X(z - d))) / (np.log1p(z + d) - np.log1p(z - d)) / 3
-        w = np.maximum(w[::-1], -60.0)
-        a = np.concatenate([[1e-4, a[0] * 0.9], a])           # раньше включения плотность X гаснет
-        w = np.concatenate([[w[0], w[0]], w])
+        dw = lambda z: -1 + (np.log(M.X(z + d)) - np.log(M.X(z - d))) / (np.log1p(z + d) - np.log1p(z - d)) / 3
+        if getattr(M, "f", 1.0) < 1.0:
+            # проба f: за точкой включения остаток X постоянен, w = -1. В точке включения w скачет с 0 на -1;
+            # скачок заменён гладкой ступенькой шириной 0.02 по ln(1+z), иначе сплайн CAMB «звенит».
+            lo, hi = np.log1p(zc) - 0.02, np.log1p(zc) + 0.02
+            z1 = np.linspace(0, np.expm1(lo), 400)
+            w1 = dw(z1)
+            t = np.linspace(0, 1, 12)[1:-1]
+            zr, wr = np.expm1(lo + (hi - lo) * t), w1[-1] + (-1 - w1[-1]) * (3 * t ** 2 - 2 * t ** 3)
+            z3 = np.concatenate([[np.expm1(hi)], np.logspace(np.log10(np.expm1(hi) + 1) + 0.01, 5, 60) - 1])
+            z = np.concatenate([z1, zr, z3])
+            w = np.concatenate([w1, wr, np.full(len(z3), -1.0)])
+            a = 1 / (1 + z[::-1])
+            w = np.maximum(w[::-1], -60.0)
+            a = np.concatenate([[1e-6], a])
+            w = np.concatenate([[-1.0], w])
+        else:
+            z = np.concatenate([np.linspace(0, 0.98 * zc, 400), [0.985 * zc, 0.99 * zc]])
+            w = dw(z)
+            a = 1 / (1 + z[::-1])
+            w = np.maximum(w[::-1], -60.0)
+            a = np.concatenate([[1e-4, a[0] * 0.9], a])       # раньше включения плотность X гаснет
+            w = np.concatenate([[w[0], w[0]], w])
         de = DarkEnergyPPF()
         de.set_w_a_table(a, w)
         return de
@@ -990,6 +1096,20 @@ def block_cmb(SN):
         c2, al = chi2_cmb(tt, te, ee)
         return c2, dict(h=h, rd=res.get_derived_params()["rdrag"], amp=al, model=M, Om=M.Am)
 
+    def eval_dsicf(x):
+        mu0, fr, th100, ombh2, ns = x
+        if not (0.6 < mu0 < 0.9 and 0.5 < fr < 0.999):
+            raise ValueError("вне области")
+
+        def mk(h):
+            M = DSICAmp(mu0, h, fr)
+            return camb_params(h, ombh2, M.Am * h * h - ombh2, ns, dsic_de(M))
+        h = h_from_theta(mk, th100)
+        M = DSICAmp(mu0, h, fr)
+        res, tt, te, ee = spectra(mk(h))
+        c2, al = chi2_cmb(tt, te, ee)
+        return c2, dict(h=h, rd=res.get_derived_params()["rdrag"], amp=al, model=M, Om=M.Am)
+
     def late(info):
         M, rd = info["model"], info["rd"]
         return chi2_sn_marg(M.E, S), chi2_bao(M, rd, True)[0]
@@ -1002,22 +1122,32 @@ def block_cmb(SN):
     dev = np.max(np.abs(bg.hubble_parameter(zz) / (70.5 * M.E(zz)) - 1))
     print(f"  перевод фона в CAMB: макс. отклонение H(z) от формулы (27) на 0 ≤ z ≤ 10⁶: {dev:.1e}")
     out["camb_dev"] = float(dev)
-    names = {"ΛCDM": ("ω_b", "ω_c", "100θ*", "n_s"), "DSIC": ("μ₀", "100θ*", "ω_b", "n_s")}
-    start = {"ΛCDM": [0.02237, 0.1200, 1.0396, 0.965], "DSIC": [0.744, 1.0396, 0.02237, 0.965]}
-    step = {"ΛCDM": [2e-4, 2e-3, 5e-4, 6e-3], "DSIC": [4e-3, 5e-4, 2e-4, 6e-3]}
-    hstep = {"ΛCDM": [1.5e-4, 1.2e-3, 3e-4, 4e-3], "DSIC": [2.5e-3, 3e-4, 1.5e-4, 4e-3]}
-    evals = {"ΛCDM": eval_lcdm, "DSIC": eval_dsic}
+    Mf = DSICAmp(0.762, 0.674, 0.92)
+    bg = camb.get_background(camb_params(0.674, WB, Mf.Am * 0.674 ** 2 - WB, 0.965, dsic_de(Mf)))
+    devf = np.max(np.abs(bg.hubble_parameter(zz) / (67.4 * Mf.E(zz)) - 1))
+    print(f"  то же для пробы f = 0.92: {devf:.1e}")
+    out["camb_dev_f"] = float(devf)
+    names = {"ΛCDM": ("ω_b", "ω_c", "100θ*", "n_s"), "DSIC": ("μ₀", "100θ*", "ω_b", "n_s"),
+             "DSIC, проба f": ("μ₀", "f", "100θ*", "ω_b", "n_s")}
+    amp = R.get("sound", {}).get("amp", dict(mu0=0.7626, f=0.922))
+    start = {"ΛCDM": [0.02237, 0.1200, 1.0396, 0.965], "DSIC": [0.744, 1.0396, 0.02237, 0.965],
+             "DSIC, проба f": [amp["mu0"], amp["f"], 1.0411, 0.02240, 0.966]}
+    step = {"ΛCDM": [2e-4, 2e-3, 5e-4, 6e-3], "DSIC": [4e-3, 5e-4, 2e-4, 6e-3], "DSIC, проба f": [3e-3, 0.02, 4e-4, 1.5e-4, 5e-3]}
+    hstep = {"ΛCDM": [1.5e-4, 1.2e-3, 3e-4, 4e-3], "DSIC": [2.5e-3, 3e-4, 1.5e-4, 4e-3], "DSIC, проба f": [2e-3, 0.01, 3e-4, 1e-4, 3e-3]}
+    evals = {"ΛCDM": eval_lcdm, "DSIC": eval_dsic, "DSIC, проба f": eval_dsicf}
+    cases = [("только реликт", "ΛCDM"), ("только реликт", "DSIC"), ("реликт + SN + BAO", "ΛCDM"),
+             ("реликт + SN + BAO", "DSIC"), ("реликт + SN + BAO", "DSIC, проба f")]
     only = os.environ.get("DSIC_CMB_CASES")                  # например "0" — только первый из четырёх подборов
     warm_path = os.environ.get("DSIC_CMB_START")             # необязательно: JSON с начальными точками подборов
     warm = json.load(open(warm_path)) if warm_path and os.path.exists(warm_path) else {}
-    idx = 0
-    for mode in ("только реликт", "реликт + SN + BAO"):
-        for name in ("ΛCDM", "DSIC"):
-            idx += 1
-            if only and str(idx - 1) not in only.split(","):
+    if RUN_CMB_F and not RUN_CMB and not only:
+        only = "4"                                           # --cmb-f: только проба f
+    for idx, (mode, name) in enumerate(cases):
+        if True:
+            if only and str(idx) not in only.split(","):
                 continue
             t0, ev = time.time(), evals[name]
-            cache = {}
+            cache, best = {}, [np.inf]
 
             def f(x):
                 key = tuple(np.round(x, 10))
@@ -1027,13 +1157,18 @@ def block_cmb(SN):
                         cache[key] = c2 if mode == "только реликт" else c2 + sum(late(info))
                     except Exception:
                         cache[key] = 1e30
+                    best[0] = min(best[0], cache[key])
+                    if len(cache) % 25 == 0:
+                        print(f"      … {name}: вызовов {len(cache)}, лучший χ² {best[0]:.2f}, прошло {time.time() - t0:.0f} с")
+                        sys.stdout.flush()
                 return cache[key]
-            jkey = ("lcdm" if name == "ΛCDM" else "dsic") + ("_cmb" if mode == "только реликт" else "_joint")
+            jkey = {"ΛCDM": "lcdm", "DSIC": "dsic", "DSIC, проба f": "dsicf"}[name] + ("_cmb" if mode == "только реликт" else "_joint")
             x0, scale, r = warm.get(jkey, start[name]), (0.35 if jkey in warm else 1.0), None
+            n = len(x0)
             for _ in range(4):                               # симплекс с перезапусками, пока минимум не перестанет улучшаться
-                simplex = np.array([x0] + [np.array(x0) + np.eye(4)[i] * step[name][i] * scale for i in range(4)])
+                simplex = np.array([x0] + [np.array(x0) + np.eye(n)[i] * step[name][i] * scale for i in range(n)])
                 rr = minimize(f, x0, method="Nelder-Mead",
-                              options=dict(initial_simplex=simplex, xatol=2e-6, fatol=0.005, maxiter=400))
+                              options=dict(initial_simplex=simplex, xatol=2e-6, fatol=0.005, maxiter=int(os.environ.get("DSIC_CMB_MAXITER", 400))))
                 gain = (r.fun - rr.fun) if r is not None else np.inf
                 if r is None or rr.fun < r.fun:
                     r = rr
@@ -1044,9 +1179,8 @@ def block_cmb(SN):
             sn, bao = late(info)
             err = hessian_err(f, r.x, hstep[name])
             # ошибка H0: линейное распространение через градиент h(x)
-            g = np.array([(ev(r.x + np.eye(4)[i] * hstep[name][i])[1]["h"] - ev(r.x - np.eye(4)[i] * hstep[name][i])[1]["h"])
-                          / (2 * hstep[name][i]) for i in range(4)])
-            n = 4
+            g = np.array([(ev(r.x + np.eye(n)[i] * hstep[name][i])[1]["h"] - ev(r.x - np.eye(n)[i] * hstep[name][i])[1]["h"])
+                          / (2 * hstep[name][i]) for i in range(n)])
             Hm = np.zeros((n, n))
             for i in range(n):
                 for j in range(n):
@@ -1069,6 +1203,17 @@ def block_cmb(SN):
                 txt = ", ".join(f"{DESI_TRACER[round(float(z), 3)]} {k}: {p:+.1f}" for z, k, p in zip(DESI_Z, DESI_KIND, pulls))
                 print(f"      отклонения точек BAO, в σ: {txt}")
                 out[jkey]["pulls"] = [float(p) for p in pulls]
+    if "dsicf_joint" in out:
+        # сравнение пробы f с ΛCDM и DSIC (f = 1); если они в этом запуске не считались, берутся из полного прогона с флагом --cmb (табл. 7): 16.11.2026
+        ref = {"lcdm_joint": dict(total=1988.8608, chi2_cmb=587.7170, chi2_sn=1389.7777, chi2_bao=11.3661),
+               "dsic_joint": dict(total=1997.6743, chi2_cmb=590.5316, chi2_sn=1387.0500, chi2_bao=20.0927)}
+        a = out["dsicf_joint"]
+        L, D = out.get("lcdm_joint", ref["lcdm_joint"]), out.get("dsic_joint", ref["dsic_joint"])
+        om = a["Om_or_Am"] * (a["H0"] / 100) ** 2
+        a.update(dchi2_lcdm=a["total"] - L["total"], dchi2_f1=D["total"] - a["total"], om_rec=om)
+        print(f"\n  проба f против ΛCDM: Δχ² итого = {a['dchi2_lcdm']:+.2f} (реликт {a['chi2_cmb'] - L['chi2_cmb']:+.2f}, "
+              f"SN {a['chi2_sn'] - L['chi2_sn']:+.2f}, BAO {a['chi2_bao'] - L['chi2_bao']:+.2f}); с поправкой на лишний параметр {a['dchi2_lcdm'] + 2:+.2f}")
+        print(f"  проба f против DSIC с f = 1: лучше на {a['dchi2_f1']:.2f}; вещество на рекомбинации ω_m = f·A_m·h² = {om:.4f}")
     R["cmb"] = out
 
 
@@ -1076,7 +1221,7 @@ def block_cmb(SN):
 #  ЗАПУСК
 # ==============================================================================
 def main():
-    print("dsic3_check.py — проверка чисел статьи DSIC 3")
+    print("dsic3_test.py — проверка чисел статьи Dual Scale Inversion Cosmology")
     print(f"ω_r = {W_R:.4e}; поправка приближения r_s (калибровка на ΛCDM Planck): {CAL:.6f}")
     block_core()
     M = block_early()
@@ -1085,9 +1230,10 @@ def main():
     SN = load_sn()
     block_late(SN)
     block_joint(SN)
+    block_sound(SN)
     block_growth()
     block_bh()
-    if RUN_CMB:
+    if RUN_CMB or RUN_CMB_F:
         block_cmb(SN)
     head("ИТОГ (JSON для сверки со статьёй)")
 
@@ -1103,7 +1249,7 @@ def main():
         return o
     js = json.dumps(clean(R), ensure_ascii=False)
     print(js)
-    with open(os.path.join(DATA_DIR, "dsic3_results.json"), "w") as fh:
+    with open(os.path.join(DATA_DIR, "dsic3_test_results.json"), "w") as fh:
         fh.write(js)
     print(f"\nГотово за {time.time() - T_START:.0f} с.")
 
