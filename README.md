@@ -1,7 +1,5 @@
 # DSIC
 
-![Dual Scale Inversion Cosmology]
-
 **Dual Scale Inversion Cosmology (DSIC)** is a cosmological model in which the Universe has no absolute scale. Cosmic acceleration is geometric: no dark-energy component is introduced.
 
 Space and objectness (everything that exists in space) are treated as two poles of one conserved norm, `S² + O² = R²`. The objectness fraction `μ = |O|/R` flows uniformly. An observer is itself built of objectness and sees only the moduli of the poles. Its rod and clock fix the observable scale factor `b(μ) = √(1−μ²)/μ²`, and redshift, kinematics and distances follow from it. Acceleration is the divergence of the two scale factors seen from inside. It begins at `μ² = 3 − √5`, which corresponds to `z_t ≈ 0.77`. The late Universe has one shape parameter, the present phase `μ₀`. With `H₀` this makes two parameters, the same as flat ΛCDM.
