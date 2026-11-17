@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-dsic3_test.py — независимая проверка всех чисел статьи
+dsic_test.py — независимая проверка всех чисел статьи
 "Dual Scale Inversion Cosmology" (А. Засеев).
 
 Запуск в Google Colab:
-    !python dsic3_test.py                # всё, кроме полного спектра реликта (около минуты)
-    !python dsic3_test.py --cmb          # плюс CAMB + plik-lite: четыре подбора таблицы 7 и проба f (около двух часов)
-    !python dsic3_test.py --cmb-f        # только проба f с полным спектром реликта (от 20 минут до часа)
+    !python dsic_test.py                # всё, кроме полного спектра реликта (около минуты)
+    !python dsic_test.py --cmb          # плюс CAMB + plik-lite: четыре подбора таблицы 7 и проба f (около двух часов)
+    !python dsic_test.py --cmb-f        # только проба f с полным спектром реликта (от 20 минут до часа)
 
 Нужны numpy и scipy. Для --cmb скрипт сам ставит camb и скачивает planck-lite-py.
 Все наблюдательные данные скачиваются из официальных репозиториев и сверяются
