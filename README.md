@@ -1,74 +1,96 @@
 # DSIC
 
-**Dual Scale Inversion Cosmology (DSIC)** is a single-parameter cosmological model without dark energy.
+![Dual Scale Inversion Cosmology]
 
-Space and matter as two sides of one flow.
+**Dual Scale Inversion Cosmology (DSIC)** is a cosmological model in which the Universe has no absolute scale. Cosmic acceleration is geometric: no dark-energy component is introduced.
 
-The model treats space and objectness as two poles of a single conserved quantity moving along the circle `S² + O² = R²` under one uniform flow. An internal observer, itself built of objectness, accesses only the modulus projection; its rod and clock uniquely fix the observable scale factor `b(μ) = √(1−μ²)/μ²`, from which redshift, kinematics and distances follow. Late-time acceleration emerges as a kinematic consequence of the divergence of the two scales — no dark energy is introduced. The entire late-Universe cosmology is generated from a single observable phase parameter, with the present epoch at `μ₀ = 0.7600 ± 0.0091`.
+Space and objectness (everything that exists in space) are treated as two poles of one conserved norm, `S² + O² = R²`. The objectness fraction `μ = |O|/R` flows uniformly. An observer is itself built of objectness and sees only the moduli of the poles. Its rod and clock fix the observable scale factor `b(μ) = √(1−μ²)/μ²`, and redshift, kinematics and distances follow from it. Acceleration is the divergence of the two scale factors seen from inside. It begins at `μ² = 3 − √5`, which corresponds to `z_t ≈ 0.77`. The late Universe has one shape parameter, the present phase `μ₀`. With `H₀` this makes two parameters, the same as flat ΛCDM.
 
-The shape of `b(μ)` has no functional freedom, so the parameter measured at low redshift forcibly determines the high-`z` behaviour: the divergences from ΛCDM at `z > 3` are predictions, not tuning.
+The early Universe follows from one more principle, P6. Matter is contained in space and cannot leave it, so when the scale of space is small, matter is compressed as in a press. The binding mass of the core has a single minimum, at the point where its deceleration is `q = ½`. That point is `κ_h² = 4 + 2√7`, or `z_h ≈ 2.26`. The compressed phase switches on there, and the amount of matter is fixed by the core, so there is no free `Ω_m`. Internal time in compressed matter runs faster, by up to a factor `Σ ≈ 24.6`. This restores the standard expansion rate at nucleosynthesis. One rate formula covers the whole history from the zero of space to today. Rewritten in dark-energy language, it gives `w(0) ≈ −0.92` and a crossing of `w = −1` at `z ≈ 0.27`. That is the direction DESI points to. The density of this effective dark energy vanishes at the switch point.
+
+Every step in the paper carries a status: postulate, derived, tested on data, open, or against the model.
 
 ---
 
 ## Repository structure
 
 ```
+DSIC_3-Azamat_Zaseev.html    the paper (in Russian) with interactive figures; opens in any browser
+DSIC_3-Azamat_Zaseev.md      the same paper as plain text: Markdown with TeX formulas, no figures
+DSIC.jpg                     cover image
 README.md
-en DSIC 2 - Azamat Zaseev.pdf
-en DSIC 2 - Azamat Zaseev.md
-ru DSIC 2 - Azamat Zaseev.md
-dsic2_formulas.mmd
-dsic2_test.py                    <- current validation / reproducibility script (v2)
-dsic2_test_results.txt           <- full output of a reference run of dsic2_test.py
+dsic3_formulas.mmd           formula map (Mermaid): how to apply the formulas and how they are derived
+dsic3_test.py                validation script; reproduces every number in the paper's tables
+dsic3_test_results.txt       complete console output of the reference runs (Google Colab)
 ```
 
 ---
 
-## DSIC 2 — Azamat Zaseev.md (current paper)
+## The paper
 
-A single self-contained document, organized in two tiers plus a growth check:
+`DSIC_3-Azamat_Zaseev` contains the following parts:
 
-**Part I — the core (late Universe, z < 2.3).** Postulates; the dual-scale circle `S ↔ O`; the spinor (Möbius) form of the core `ψ = R·e^{iφ/2}` — the sign of objectness as the second sheet of a two-fold covering forced by the postulates; the modulus projection `μ`; the observer's rod and clock; the scale factor, redshift, kinematics with the built-in deceleration→acceleration crossover at `μ_cross = √(3−√5)` (`z_t = 0.769`); closed-form distances and a finite particle horizon; the mapping to the Friedmann form via `w_eff(z)`; machine verification of the internal identities; the confrontation with data; falsifiable high-`z` predictions.
+- A plain-language introduction.
+- The six principles.
+- The core and its full cycle through the two zeros (zero of objectness and zero of space).
+- The inside view: rod, clock and observable scale.
+- Kinematics, distances and the particle horizon.
+- Late-Universe data.
+- Where the core alone ends.
+- Compression and internal time.
+- Joint tests with the full Planck spectrum.
+- The dark-energy language.
+- Time budgets of early objects.
+- Falsification criteria.
+- Limitations and open questions.
+- Appendices: a formula map, notation, and data and reproduction.
 
-**Part II — the second tier (early Universe).** One new entity (binding of objects), one postulate (P6) and one measured constant — the detachment horizon `μ_d = 0.9806` (`z ≈ 4.53`), calibrated against the directly measured angle `θ*` (calibration, not a prediction). The correction is identically zero below the threshold, so the late Universe is untouched. The same threshold sets the domain of the clock factor: clocks are normal inside the connected monolith and relative after detachment. The first objects are patches of the monolith that never uncoupled — expected early islands, not a contradiction with JWST galaxies at `z ≈ 10–14`. Island time makes the budget of every early object individually testable.
+The HTML version computes its figures in the browser with the same formulas as the script. The Markdown version has the same text, numbering and numbers.
 
-**Part III — structure growth.** Linear perturbation growth on the DSIC background in the GR limit against the Gold-2017 `fσ₈` compilation; the data constrain the invariant `S₈ = 0.761 ± 0.013`. A survival test, not a derivation from the core.
-
-The status of every claim is separated explicitly: the core is self-contained; the extensions are not derived from it.
-
-### Headline results (all reproduced by `dsic2_test.py`)
+### Results (all reproduced by `dsic3_test.py`)
 
 | probe | data | DSIC vs ΛCDM |
 |---|---|---|
-| supernovae | Pantheon+SH0ES, 1657 SN, STAT+SYS | indistinguishable, `Δχ² = +0.05` |
-| parameter | χ² Hessian | `μ₀ = 0.7600 ± 0.0091` (~1.2 %) |
-| joint SN+BAO | + DESI DR2, full 12×12 cov. | DSIC mildly preferred, `Δχ² = −5.0` |
-| BAO `D_M`–`D_H` | DESI DR2 | `χ²/dof` 1.04 vs 1.36 |
-| `Om(z)` | chronometers + DESI | does **not** discriminate (sign set by `H₀`) |
-| high `z` | prediction | `D_H/r_d` diverges up to −5 % by `z = 3.5` |
-| CMB distance | closure to `θ*` | exact by construction (`μ_d` calibrated) |
-| cosmic time | detachment horizon | `t₀ = 13.5–13.6` Gyr (stellar anchor) |
-| SMBH test | 6 early black holes | 5/6 accommodated; UHZ1 → heavy seed, same as its discoverers conclude |
-| structure growth | Gold-2017, 18 points | `χ²/dof` 0.73 vs 0.74; `S₈ = 0.761 ± 0.013` |
+| supernovae | Pantheon+SH0ES, 1657 SN, STAT+SYS | `Δχ² = −0.12`; `μ₀ = 0.7604 ± 0.0091` |
+| supernovae + BAO, free `r_d` | + DESI DR2, 13 points, official covariance | `Δχ² = −4.99` |
+| BAO alone | DESI DR2 | `Δχ² = −1.83` |
+| cosmic chronometers | 33 `H(z)`, Moresco 2020 covariance | `Δχ² = +0.49`; does not discriminate |
+| CMB, full spectrum | Planck 2018 plik-lite, 615 points | `Δχ² = −2.5` |
+| SN + BAO + CMB angle `θ*` | each model computes its own sound horizon | `Δχ² = +5.4`, ΛCDM preferred |
+| SN + BAO + full CMB spectrum | CAMB + plik-lite | `Δχ² = +8.8`, ΛCDM preferred |
+| same, free matter fraction `f` (+1 parameter) | probe, not derived | `f = 0.944 ± 0.014`; `Δχ² = −7.7` (AIC −5.7, BIC tie) |
+| structure growth | Gold-2017 `fσ₈`, 18 points, GR limit | `χ²` 13.0 vs 13.0; `σ₈ = 0.742 ± 0.028` |
+| early black holes | 6 objects, Eddington growth | same as ΛCDM: 1/6 from 100 M☉ seeds, 6/6 from 10⁴ M☉ |
 
-In every fit DSIC and ΛCDM carry the same number of free parameters, so `Δχ² = ΔAIC = ΔBIC`.
+Unless a row says otherwise, DSIC and ΛCDM have the same number of free parameters.
+
+### What does not work yet
+
+- **The sound horizon.** At the phase preferred by the late-Universe data, the model's sound horizon is 1.8 % shorter than BAO require. This is why the joint fits lose and why supernovae and the CMB prefer different phases. The gap lies between `z ≈ 2` and recombination, where matter sets the expansion. It does not lie near the zero of space.
+- **The amount of matter.** If the amount of matter is 5.6 % below what the switch point gives (`f = 0.944`), the model describes all three data sets at least as well as ΛCDM, and the two phases agree. But `f` is not derived. Moving the switch point cannot help, because any shift adds matter.
+- **The Hubble tension** is not resolved. With the full spectrum the model gives `H₀ = 67.9 ± 0.4`, which is 4.6σ below SH0ES.
+- **Not yet explained.** The model has no perturbation theory of its own: growth is computed in the GR limit. It does not explain the nature of non-luminous matter, about 85 % of all matter. Its rule for measuring scale is a postulate.
 
 ---
 
-## dsic2_test.py (current script)
+## dsic3_test.py
 
-One self-contained empirical-validation pipeline (`numpy`, `scipy`; runtime 10–15 minutes; the Pantheon+SH0ES catalog is downloaded automatically, ~65 MB). All hard-coded figures are documented in place and verified against the originals:
+The script is self-contained. It needs `numpy` and `scipy`. It downloads public data from the official sources; the DESI file is also checked against a copy embedded in the script:
 
-- **Pantheon+SH0ES** supernovae (auto-download, full STAT+SYS covariance);
-- **DESI DR2 BAO** (Table IV, with a built-in self-check against the official values);
-- **cosmic chronometers** (33 points; full Moresco et al. 2020 covariance for the 15-point subset);
-- **Planck 2018** reference calibration (column `base_plikHM_TTTEEE_lowl_lowE_lensing`, Planck Legacy Archive tables);
-- **early SMBHs** with spectroscopic redshifts and masses verified against the discovery papers (Bogdán 2024; Natarajan 2024; Goulding 2023; Maiolino 2024; Larson 2023; Wang 2021; Bañados 2018; Mortlock 2011);
-- **Gold-2017 `fσ₈`** growth compilation (WiggleZ covariance included).
+- **Supernovae:** Pantheon+SH0ES, full STAT+SYS and STAT-ONLY covariances.
+- **BAO:** DESI DR2 data vector and covariance, 13 measurements, with a built-in check against the official file.
+- **Cosmic chronometers:** 33 points, with the Moresco et al. 2020 covariance for the 15-point subset.
+- **CMB:** the angle `θ*` and the Planck 2018 plik-lite compressed likelihood, through planck-lite-py. CAMB is installed automatically.
+- **Structure growth:** the Gold-2017 `fσ₈` compilation.
+- **Early supermassive black holes:** redshifts and masses from the discovery papers.
 
-Blocks `[0]–[11]`: DESI self-check; machine verification of the core identities; the spinor (Möbius) core — 8 identities plus the forcedness test of the two-sheet covering; anchored SN fit with Hessian errors; STAT-ONLY robustness; joint SN+BAO with free `r_d`; the `Om(z)` diagnostic in two covariance modes; high-`z` predictions; piecewise cosmic time across the detachment horizon; the island-time test on real SMBHs; the Planck self-check; fixing `μ_d` via `θ*`; the zero-below-threshold control and the amplitude↔threshold degeneracy; the trace of `μ_d` and probe reach; structure growth and `S₈`.
+```
+python dsic3_test.py           # everything except the full CMB spectrum, about a minute
+python dsic3_test.py --cmb     # + four full-spectrum fits and the f-probe, about two hours
+python dsic3_test.py --cmb-f   # only the f-probe with the full CMB spectrum, 20–60 minutes
+```
 
-`dsic2_test_results.txt` is the complete console output of a reference run — every number quoted in the paper can be located there by its block tag.
+In Google Colab, prefix the commands with `!`. The output is organized in blocks `[1]`–`[10]`, and each block names the tables and formulas of the paper that it checks. `dsic3_test_results.txt` holds the complete output of the Google Colab runs from which the paper's numbers are taken.
 
 ---
 
