@@ -15,14 +15,14 @@ Every step in the paper carries a status: postulate, derived, tested on data, op
 ## Repository structure
 
 ```
-DSIC_3_ru_en-Azamat_Zaseev.html    the paper with interactive figures, in Russian and English (RU / EN switch); opens in any browser
-DSIC_3_ru-Azamat_Zaseev.md      the paper as plain text in Russian: Markdown with TeX formulas, no figures
-DSIC_3_en-Azamat_Zaseev.md   the same plain-text paper in English
+DSIC-Azamat_Zaseev.html    the paper with interactive figures, in Russian and English (RU / EN switch); opens in any browser
+DSIC_ru-Azamat_Zaseev.md      the paper as plain text in Russian: Markdown with TeX formulas, no figures
+DSIC_en-Azamat_Zaseev.md   the same plain-text paper in English
 DSIC.jpg                     cover image
 README.md
-dsic3_formulas.mmd           formula map (Mermaid): how to apply the formulas and how they are derived
-dsic3_test.py                validation script; reproduces every number in the paper's tables
-dsic3_test_results.txt       complete console output of the reference runs (Google Colab)
+dsic_formulas.mmd           formula map (Mermaid): how to apply the formulas and how they are derived
+dsic_test.py                validation script; reproduces every number in the paper's tables
+dsic_test_results.txt       complete console output of the reference runs (Google Colab)
 ```
 
 ---
